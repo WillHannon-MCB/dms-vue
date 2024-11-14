@@ -1,4 +1,6 @@
 /**
+ * Configure the Mol* plugin instance
+ *
  * DefaultPluginUISpec for Mol* plugin: https://github.com/molstar/molstar/blob/master/src/mol-plugin/spec.ts
  * PluginConfig for Mol* plugin: https://github.com/molstar/molstar/blob/master/src/mol-plugin/config.ts
  */
