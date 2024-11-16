@@ -24,7 +24,7 @@ const props = defineProps({
 const molstarContainer = ref(null);
 
 // Computed property for the data URL
-const dataUrl = computed(() => `https://www.ebi.ac.uk/pdbe/static/entry/${props.pdbID}_updated.cif`);
+const dataUrl = computed(() => `https://www.ebi.ac.uk/pdbe/static/entry/${props.pdbID.toLowerCase()}_updated.cif`);
 
 async function createPlugin(parent) {
   const plugin = await createPluginUI({

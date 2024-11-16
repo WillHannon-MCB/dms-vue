@@ -1,7 +1,7 @@
 <script setup>
 import MolstarWrapper from './components/protein/MolstarWrapper.vue';
 
-const pdbID = '1cbs';
+const pdbID = '6XDG';
 </script>
 
 <template>
