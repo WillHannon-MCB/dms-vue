@@ -14,7 +14,7 @@
 import { CustomElementProperty } from 'molstar/lib/mol-model-props/common/custom-element-property'
 import { Color } from 'molstar/lib/mol-util/color'
 import { generateSequentialColorScale } from '@/utils/scales/color-scales'
-import processExampleData from '@/utils/data/process-input-data'
+import { processExampleData } from '@/utils/data/process-input-data'
 import residueData from '@/assets/data/residueData.json'
 
 const condition = 'REGN10987'

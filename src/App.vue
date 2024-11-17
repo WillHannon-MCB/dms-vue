@@ -1,28 +1,35 @@
 <script setup>
+import { ref } from "vue";
 import ProteinViewer from './protein/ProteinViewer.vue';
+import UploadCSV from '@/upload/UploadCSV.vue';
 
 const pdbID = '6XDG';
+
+// This state will store the parsed CSV data
+const csvData = ref(null);
+
+// Callback function to handle the parsed CSV data
+function handleCsvProcessed(data) {
+  csvData.value = data;
+}
 </script>
 
 <template>
-  <header>
-    <h1>Protein Structure Viewer</h1>
-  </header>
   <main>
+    <!-- CSV Upload Section -->
+    <UploadCSV @csv-processed="handleCsvProcessed" />
+    <!-- Protein Viewer -->
     <ProteinViewer :pdbID="pdbID" style="width: 100%; height: 600px;" />
   </main>
 </template>
 
 <style scoped>
-header {
-  text-align: center;
-  padding: 20px;
-}
-
 main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
 }
 </style>
