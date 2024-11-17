@@ -6,8 +6,8 @@
 import { ref, computed, onMounted } from 'vue';
 import { createPluginUI } from 'molstar/lib/mol-plugin-ui';
 import { renderReact18 } from 'molstar/lib/mol-plugin-ui/react18';
-import molstarConfig from '@/scripts/molstarConfig';
-import StripedResidues from '@/utils/residueColoring';
+import molstarConfig from '@/utils/molstar/viewer-config';
+import CustomResidueColoring from '@/utils/molstar/custom-element';
 import "molstar/build/viewer/molstar.css";
 
 const props = defineProps({
@@ -33,9 +33,9 @@ async function createPlugin(parent) {
     render: renderReact18,
   });
 
-  plugin.representation.structure.themes.colorThemeRegistry.add(StripedResidues.colorThemeProvider);
-  plugin.managers.lociLabels.addProvider(StripedResidues.labelProvider);
-  plugin.customModelProperties.register(StripedResidues.propertyProvider, true);
+  plugin.representation.structure.themes.colorThemeRegistry.add(CustomResidueColoring.colorThemeProvider);
+  plugin.managers.lociLabels.addProvider(CustomResidueColoring.labelProvider);
+  plugin.customModelProperties.register(CustomResidueColoring.propertyProvider, true);
 
   const data = await plugin.builders.data.download({ url: dataUrl.value }, { state: { isGhost: true } });
   const trajectory = await plugin.builders.structure.parseTrajectory(data, props.format);

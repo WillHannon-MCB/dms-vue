@@ -1,5 +1,5 @@
 <script setup>
-import MolstarWrapper from './components/protein/MolstarWrapper.vue';
+import ProteinViewer from './protein/ProteinViewer.vue';
 
 const pdbID = '6XDG';
 </script>
@@ -9,7 +9,7 @@ const pdbID = '6XDG';
     <h1>Protein Structure Viewer</h1>
   </header>
   <main>
-    <MolstarWrapper :pdbID="pdbID" style="width: 100%; height: 600px;" />
+    <ProteinViewer :pdbID="pdbID" style="width: 100%; height: 600px;" />
   </main>
 </template>
 
