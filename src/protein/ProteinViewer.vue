@@ -4,27 +4,23 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { useDataStore } from '@/stores/data';
 import { createPluginUI } from 'molstar/lib/mol-plugin-ui';
 import { renderReact18 } from 'molstar/lib/mol-plugin-ui/react18';
 import molstarConfig from '@/utils/molstar/viewer-config';
 import CustomResidueColoring from '@/utils/molstar/custom-element';
 import "molstar/build/viewer/molstar.css";
 
-const props = defineProps({
-  pdbID: {
-    type: String,
-    required: true,
-  },
-  format: {
-    type: String,
-    default: 'mmcif',
-  },
-});
-
 const molstarContainer = ref(null);
+const dataStore = useDataStore();
+console.log(dataStore.models);
+
+// Test with fixed values
+const pdbID = '6XDG';
+const format = 'mmcif';
 
 // Computed property for the data URL
-const dataUrl = computed(() => `https://www.ebi.ac.uk/pdbe/static/entry/${props.pdbID.toLowerCase()}_updated.cif`);
+const dataUrl = computed(() => `https://www.ebi.ac.uk/pdbe/static/entry/${pdbID.toLowerCase()}_updated.cif`);
 
 async function createPlugin(parent) {
   const plugin = await createPluginUI({
@@ -38,7 +34,7 @@ async function createPlugin(parent) {
   plugin.customModelProperties.register(CustomResidueColoring.propertyProvider, true);
 
   const data = await plugin.builders.data.download({ url: dataUrl.value }, { state: { isGhost: true } });
-  const trajectory = await plugin.builders.structure.parseTrajectory(data, props.format);
+  const trajectory = await plugin.builders.structure.parseTrajectory(data, format);
   await plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default');
 
   return plugin;
