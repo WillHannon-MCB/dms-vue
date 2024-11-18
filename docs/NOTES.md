@@ -93,10 +93,7 @@ The bottom line is that frameworks make applications faster to build, easier to 
 
 These notes are a living document that will be updated as the application advances.
 
-If I accomplish only one thing with this application, it should be coloring a protein structure with arbitrary data. I’ve colored a protein structure in Mol\* with example DMS data. The next step is scaling this up to arbitrary datasets. This means I need to:
+I've got a decent model for loading, validating, and storing data in the application. I still need to connect this process to the protein viewer. This involve two main steps:
 
-1. Formalize a basic input data format
-2. Make an object to store data
-3. Check that the data is formatted correctly
-4. Create ‘Custom Elements’ from the data
-5. Link ‘Custom Elements’ to corresponding models
+1. Refactoring the protein viewer to listen to changes in data and upload structure (potentially multiple)
+2. Make custom coloring elements depend on the data that's been uploaded.
