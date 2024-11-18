@@ -57,8 +57,8 @@ const handleFileUpload = async () => {
     await store.uploadData(text, [], fileName);
 
     selectedFile.value = null;
-    selectedFileName.value = "No file chosen";
   } catch (error) {
+    selectedFileName.value = "No file chosen";
     console.error("Failed to upload CSV:", error.message);
   }
 };
