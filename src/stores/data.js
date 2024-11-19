@@ -36,5 +36,13 @@ export const useDataStore = defineStore('data', {
       const models = state.rawData.flatMap((row) => row.model.split(';'))
       return Array.from(new Set(models))
     },
+    structures() {
+      return this.models.map((model) => ({
+        url: `https://www.ebi.ac.uk/pdbe/static/entry/${model.toLowerCase()}_updated.cif`,
+        format: 'mmcif',
+        assemblyId: '1',
+        isBinary: false,
+      }))
+    },
   },
 })

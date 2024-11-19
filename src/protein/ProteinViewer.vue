@@ -3,21 +3,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { createPluginUI } from 'molstar/lib/mol-plugin-ui';
 import { renderReact18 } from 'molstar/lib/mol-plugin-ui/react18';
 import { Asset } from 'molstar/lib/mol-util/assets';
+import { useDataStore } from "@/stores/data";
 import molstarConfig from '@/utils/molstar/viewer-config';
 import "molstar/build/viewer/molstar.css";
 
 const molstarContainer = ref(null);
 let plugin = null;
-
-const exampleStructures = [
-  { url: `https://www.ebi.ac.uk/pdbe/static/entry/${'6XDG'.toLowerCase()}_updated.cif`, format: 'mmcif', assemblyId: '1', isBinary: false },
-  { url: `https://www.ebi.ac.uk/pdbe/static/entry/${'7YBN'.toLowerCase()}_updated.cif`, format: 'mmcif', assemblyId: '1', isBinary: false },
-];
-
+const dataStore = useDataStore();
 
 /**
  * Initializes the Mol* plugin.
@@ -48,6 +44,8 @@ async function load(plugin, structures) {
     console.error('Plugin instance is not initialized.');
     return;
   }
+
+  plugin.clear();
 
   for (const { url, format = 'mmcif', assemblyId = '', isBinary = false } of structures) {
     try {
@@ -80,12 +78,14 @@ async function load(plugin, structures) {
   }
 }
 
-
 onMounted(async () => {
   plugin = await initializePlugin();
+});
+
+watch(() => dataStore.structures, (newStructures) => {
   if (plugin) {
-    // await load(plugin, exampleData);
-    await load(plugin, exampleStructures);
+    load(plugin, newStructures);
   }
 });
+
 </script>
