@@ -3,21 +3,21 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { createPluginUI } from 'molstar/lib/mol-plugin-ui';
 import { renderReact18 } from 'molstar/lib/mol-plugin-ui/react18';
+import { Asset } from 'molstar/lib/mol-util/assets';
 import molstarConfig from '@/utils/molstar/viewer-config';
 import "molstar/build/viewer/molstar.css";
 
 const molstarContainer = ref(null);
 let plugin = null;
 
-const exampleData = {
-  format: 'mmcif',
-  assemblyId: '',
-  isBinary: false,
-  dataUrl: computed(() => `https://www.ebi.ac.uk/pdbe/static/entry/${'6XDG'.toLowerCase()}_updated.cif`),
-};
+const exampleStructures = [
+  { url: `https://www.ebi.ac.uk/pdbe/static/entry/${'6XDG'.toLowerCase()}_updated.cif`, format: 'mmcif', assemblyId: '1', isBinary: false },
+  { url: `https://www.ebi.ac.uk/pdbe/static/entry/${'7YBN'.toLowerCase()}_updated.cif`, format: 'mmcif', assemblyId: '1', isBinary: false },
+];
+
 
 /**
  * Initializes the Mol* plugin.
@@ -39,27 +39,53 @@ async function initializePlugin() {
 }
 
 /**
- * Load structure data into Mol*.
+ * Load multiple structures into Mol*.
  * @param {Object} plugin - The initialized plugin instance.
+ * @param {Array} structures - An array of structure loading options.
  */
-async function load(plugin) {
+async function load(plugin, structures) {
   if (!plugin) {
     console.error('Plugin instance is not initialized.');
     return;
   }
-  const data = await plugin.builders.data.download(
-    { url: exampleData.dataUrl.value },
-    { state: { isGhost: true } }
-  );
-  const trajectory = await plugin.builders.structure.parseTrajectory(data, exampleData.format);
-  await plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default');
+
+  for (const { url, format = 'mmcif', assemblyId = '', isBinary = false } of structures) {
+    try {
+      // Step 1: Download the data
+      const data = await plugin.builders.data.download(
+        { url: Asset.Url(url), isBinary },
+        { state: { isGhost: true } }
+      );
+
+      // Step 2: Parse the trajectory
+      const trajectory = await plugin.builders.structure.parseTrajectory(data, format);
+
+      // Step 3: Apply the hierarchy preset
+      await plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default', {
+        structure: assemblyId ? {
+          name: 'assembly',
+          params: { id: assemblyId }
+        } : {
+          name: 'model',
+          params: {}
+        },
+        showUnitcell: false,
+        representationPreset: 'auto'
+      });
+
+      console.log(`Successfully loaded structure from ${url}`);
+    } catch (error) {
+      console.error(`Failed to load structure from ${url}:`, error);
+    }
+  }
 }
+
 
 onMounted(async () => {
   plugin = await initializePlugin();
   if (plugin) {
-    console.log('Plugin initialized:', plugin);
-    await load(plugin);
+    // await load(plugin, exampleData);
+    await load(plugin, exampleStructures);
   }
 });
 </script>
