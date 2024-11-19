@@ -6,9 +6,9 @@ import UploadCSV from '@/upload/UploadCSV.vue';
 <template>
   <main>
     <!-- CSV Upload Section -->
-    <UploadCSV @csv-processed="handleCsvProcessed" />
+    <UploadCSV />
     <!-- Protein Viewer -->
-    <ProteinViewer :pdbID="pdbID" style="width: 100%; height: 600px;" />
+    <ProteinViewer style="width: 100%; height: 600px;" />
   </main>
 </template>
 
