@@ -1,6 +1,3 @@
-/**
- * Process user-supplied csv data into a useable format.
- */
 import { csvParse } from 'd3-dsv'
 
 /**
@@ -11,7 +8,17 @@ import { csvParse } from 'd3-dsv'
  */
 export function parseCsvData(csvText, residueLevelDataColumns = []) {
   try {
-    const parsedData = csvParse(csvText)
+    // Use d3-dsv's row conversion function to process data
+    const parsedData = csvParse(csvText, (row) => {
+      Object.keys(row).forEach((key) => {
+        // Convert values to numbers if they look numeric
+        if (!isNaN(row[key]) && row[key].trim() !== '') {
+          row[key] = +row[key] // Convert to number
+        }
+      })
+      return row
+    })
+
     validateCsvData(parsedData, residueLevelDataColumns)
     return parsedData
   } catch (error) {
@@ -83,37 +90,65 @@ export function validateCsvData(data, residueLevelDataColumns = []) {
 }
 
 /**
- * Processes example data to filter and reduce based on a condition and metric.
+ * Processes residue-level data given a column name and condition.
  *
  * @param {Array} data - The input data array.
- * @param {string} conditionKey - The condition column to filter on.
- * @param {string} metricKey - The metric column to aggregate.
- * @returns {Array} - The processed data array.
+ * @param {string} column - The metric column to aggregate.
+ * @param {string} [condition] - The condition column to filter on (optional).
+ * @returns {Array} - The processed data array with residue, chain, model, and aggregated column values.
  */
-export function processExampleData(data, conditionKey, metricKey) {
-  // Filter data based on the specified condition
-  const filteredData = data.filter((entry) => entry.condition === conditionKey)
+export function processResidueData(data, column, condition = null) {
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error('Input data must be a non-empty array.')
+  }
+  if (typeof column !== 'string' || column.trim() === '') {
+    throw new Error('Column name must be a non-empty string.')
+  }
 
-  // Reduce data to ensure unique residues, grouped by site, chain, structure, and wildtype
-  const reducedData = filteredData.reduce((acc, entry) => {
-    const key = `${entry.site}:${entry.chain}:${entry.structure}`
-    if (!acc[key]) {
-      // Create an entry with the required fields
-      acc[key] = {
-        site: entry.site,
-        wildtype: entry.wildtype,
-        chain: entry.chain,
-        structure: entry.structure,
-        [metricKey]: entry[metricKey],
-      }
-    } else {
-      // Update the metric value if necessary (e.g., take max, mean, or overwrite)
-      // For simplicity, we're taking the maximum metric value
-      acc[key][metricKey] = Math.max(acc[key][metricKey], entry[metricKey])
+  // Filter the data array based on the condition (if provided)
+  const filteredData = condition ? data.filter((d) => d.condition === condition) : data
+
+  // Group data by residue, chain, and model
+  const groupedData = new Map()
+
+  filteredData.forEach((entry) => {
+    const { residue, chain, model } = entry
+    const value = entry[column]
+
+    if (residue == null || chain == null || model == null) {
+      throw new Error('Entries must have residue, chain, model.')
     }
-    return acc
-  }, {})
 
-  // Convert the object back into an array
-  return Object.values(reducedData)
+    const key = `${residue}_${chain}_${model}`
+
+    if (!groupedData.has(key)) {
+      groupedData.set(key, { residue, chain, model, values: new Set() })
+    }
+
+    const group = groupedData.get(key)
+    group.values.add(value)
+  })
+
+  // Check for multiple unique values and reduce to a single value
+  const processedData = []
+
+  groupedData.forEach((group, key) => {
+    const uniqueValues = Array.from(group.values)
+    if (uniqueValues.length > 1) {
+      throw new Error(
+        `Conflict detected for residue-chain-model (${key}): multiple values for column '${column}': ${uniqueValues.join(
+          ', ',
+        )}`,
+      )
+    }
+
+    processedData.push({
+      residue: group.residue,
+      chain: group.chain,
+      model: group.model,
+      value: uniqueValues[0],
+    })
+  })
+
+  return processedData
 }

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { parseCsvData, validateCsvData } from '@/utils/data/process-input-data'
+import { parseCsvData } from '@/utils/data/process-input-data'
 
 export const useDataStore = defineStore('data', {
   state: () => ({
@@ -9,14 +9,14 @@ export const useDataStore = defineStore('data', {
   }),
 
   actions: {
-    async uploadData(csvText, residueLevelDataColumns = [], fileName = null) {
+    async uploadData(csvText, fileName = null) {
       try {
+        console.log(fileName)
         // Parse the CSV data
         const parsedData = parseCsvData(csvText)
-        // Validate the parsed data
-        validateCsvData(parsedData, residueLevelDataColumns)
         // Update the store with valid data
         this.rawData = parsedData
+        console.log('Data uploaded and validated:', this.rawData)
         this.successMessage = fileName
           ? `File "${fileName}" uploaded and validated successfully!`
           : 'Data uploaded and validated successfully!'
@@ -43,6 +43,12 @@ export const useDataStore = defineStore('data', {
         assemblyId: '1',
         isBinary: false,
       }))
+    },
+    conditions(state) {
+      if (!state.rawData || !state.rawData[0]?.condition) {
+        return []
+      }
+      return Array.from(new Set(state.rawData.map((row) => row.condition)))
     },
   },
 })

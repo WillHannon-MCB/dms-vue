@@ -8,12 +8,16 @@ import { createPluginUI } from 'molstar/lib/mol-plugin-ui';
 import { renderReact18 } from 'molstar/lib/mol-plugin-ui/react18';
 import { Asset } from 'molstar/lib/mol-util/assets';
 import { useDataStore } from "@/stores/data";
+import { useConfigStore } from "@/stores/config";
+import { useColorStore } from '@/stores/color';
 import molstarConfig from '@/utils/molstar/viewer-config';
 import "molstar/build/viewer/molstar.css";
 
 const molstarContainer = ref(null);
 let plugin = null;
 const dataStore = useDataStore();
+const configStore = useConfigStore();
+const colorStore = useColorStore();
 
 /**
  * Initializes the Mol* plugin.
@@ -87,5 +91,25 @@ watch(() => dataStore.structures, (newStructures) => {
     load(plugin, newStructures);
   }
 });
+
+watch(() => colorStore.customElements, (customElements) => {
+  if (plugin && customElements) {
+    Object.values(customElements).forEach((customElement) => {
+      plugin.representation.structure.themes.colorThemeRegistry.add(customElement.colorThemeProvider);
+      plugin.managers.lociLabels.addProvider(customElement.labelProvider);
+      plugin.customModelProperties.register(customElement.propertyProvider, true);
+    });
+  }
+}, { deep: true });
+
+watch(
+  [() => dataStore.rawData, () => configStore.residueColumns],
+  ([rawData, residueColumns]) => {
+    if (rawData && residueColumns.length) {
+      colorStore.generateCustomElements();
+    }
+  }
+);
+
 
 </script>

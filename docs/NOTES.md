@@ -93,7 +93,6 @@ The bottom line is that frameworks make applications faster to build, easier to 
 
 These notes are a living document that will be updated as the application advances.
 
-I've got a decent model for loading, validating, and storing data in the application. I still need to connect this process to the protein viewer. This involves two main steps:
+Generate custom elements from user-data. What's the best way to connect a user's data to a custom element and connect that custom element to the protein viewer?
 
-1. Refactoring the protein viewer to listen to changes in data and upload structure (potentially multiple)
-2. Make custom coloring elements depend on the data that's been uploaded.
+What does the workflow look like?

@@ -54,7 +54,7 @@ const handleFileUpload = async () => {
     const text = await selectedFile.value.text();
     const fileName = selectedFile.value.name;
 
-    await store.uploadData(text, [], fileName);
+    await store.uploadData(text, fileName);
 
     selectedFile.value = null;
   } catch (error) {
