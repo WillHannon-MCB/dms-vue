@@ -33,7 +33,7 @@ export const useDataStore = defineStore('data', {
   getters: {
     models(state) {
       if (!state.rawData) return []
-      const models = state.rawData.flatMap((row) => row.model.split(';'))
+      const models = state.rawData.flatMap((row) => row.model.split(':'))
       return Array.from(new Set(models))
     },
     structures() {

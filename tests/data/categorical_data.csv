@@ -1,0 +1,434 @@
+residue,region,chain,model
+-2,Signal Peptide,A;B;C,7U9G
+-1,Signal Peptide,A;B;C,7U9G
+1,Central Domain,A;B;C,7U9G
+2,Central Domain,A;B;C,7U9G
+3,Central Domain,A;B;C,7U9G
+4,Central Domain,A;B;C,7U9G
+5,Central Domain,A;B;C,7U9G
+6,Central Domain,A;B;C,7U9G
+7,Central Domain,A;B;C,7U9G
+8,Central Domain,A;B;C,7U9G
+9,Central Domain,A;B;C,7U9G
+10,Central Domain,A;B;C,7U9G
+11,Central Domain,A;B;C,7U9G
+12,Central Domain,A;B;C,7U9G
+13,Central Domain,A;B;C,7U9G
+14,Central Domain,A;B;C,7U9G
+15,Central Domain,A;B;C,7U9G
+16,Central Domain,A;B;C,7U9G
+17,Central Domain,A;B;C,7U9G
+18,Central Domain,A;B;C,7U9G
+19,Central Domain,A;B;C,7U9G
+20,Central Domain,A;B;C,7U9G
+21,Linker,A;B;C,7U9G
+22,Linker,A;B;C,7U9G
+23,Linker,A;B;C,7U9G
+24,Linker,A;B;C,7U9G
+25,Linker,A;B;C,7U9G
+26,Linker,A;B;C,7U9G
+27,Linker,A;B;C,7U9G
+28,Linker,A;B;C,7U9G
+29,Linker,A;B;C,7U9G
+30,Linker,A;B;C,7U9G
+31,Linker,A;B;C,7U9G
+32,Linker,A;B;C,7U9G
+33,Linker,A;B;C,7U9G
+34,Linker,A;B;C,7U9G
+35,Linker,A;B;C,7U9G
+36,Linker,A;B;C,7U9G
+37,Linker,A;B;C,7U9G
+38,Pleckstrin Homology Domain,A;B;C,7U9G
+39,Pleckstrin Homology Domain,A;B;C,7U9G
+40,Pleckstrin Homology Domain,A;B;C,7U9G
+41,Pleckstrin Homology Domain,A;B;C,7U9G
+42,Pleckstrin Homology Domain,A;B;C,7U9G
+43,Pleckstrin Homology Domain,A;B;C,7U9G
+44,Pleckstrin Homology Domain,A;B;C,7U9G
+45,Pleckstrin Homology Domain,A;B;C,7U9G
+46,Linker,A;B;C,7U9G
+47,Linker,A;B;C,7U9G
+48,Linker,A;B;C,7U9G
+49,Linker,A;B;C,7U9G
+50,Linker,A;B;C,7U9G
+51,Linker,A;B;C,7U9G
+52,Linker,A;B;C,7U9G
+53,Fusion Domain,A;B;C,7U9G
+54,Fusion Domain,A;B;C,7U9G
+55,Fusion Domain,A;B;C,7U9G
+56,Fusion Domain,A;B;C,7U9G
+57,Fusion Domain,A;B;C,7U9G
+58,Fusion Domain,A;B;C,7U9G
+59,Fusion Domain,A;B;C,7U9G
+60,Fusion Domain,A;B;C,7U9G
+61,Fusion Domain,A;B;C,7U9G
+62,Fusion Domain,A;B;C,7U9G
+63,Fusion Domain,A;B;C,7U9G
+64,Fusion Domain,A;B;C,7U9G
+65,Fusion Domain,A;B;C,7U9G
+66,Fusion Domain,A;B;C,7U9G
+67,Fusion Domain,A;B;C,7U9G
+68,Fusion Domain,A;B;C,7U9G
+69,Fusion Domain,A;B;C,7U9G
+70,Fusion Domain,A;B;C,7U9G
+71,Fusion Domain,A;B;C,7U9G
+72,Fusion Domain,A;B;C,7U9G
+73,Fusion Domain,A;B;C,7U9G
+74,Fusion Domain,A;B;C,7U9G
+75,Fusion Domain,A;B;C,7U9G
+76,Fusion Domain,A;B;C,7U9G
+77,Fusion Domain,A;B;C,7U9G
+78,Fusion Domain,A;B;C,7U9G
+79,Fusion Domain,A;B;C,7U9G
+80,Fusion Domain,A;B;C,7U9G
+81,Fusion Domain,A;B;C,7U9G
+82,Fusion Domain,A;B;C,7U9G
+83,Fusion Domain,A;B;C,7U9G
+84,Fusion Domain,A;B;C,7U9G
+85,Fusion Domain,A;B;C,7U9G
+86,Fusion Domain,A;B;C,7U9G
+87,Fusion Domain,A;B;C,7U9G
+88,Fusion Domain,A;B;C,7U9G
+89,Fusion Domain,A;B;C,7U9G
+90,Fusion Domain,A;B;C,7U9G
+91,Fusion Domain,A;B;C,7U9G
+92,Fusion Domain,A;B;C,7U9G
+93,Fusion Domain,A;B;C,7U9G
+94,Fusion Domain,A;B;C,7U9G
+95,Fusion Domain,A;B;C,7U9G
+96,Fusion Domain,A;B;C,7U9G
+97,Fusion Domain,A;B;C,7U9G
+98,Fusion Domain,A;B;C,7U9G
+99,Fusion Domain,A;B;C,7U9G
+100,Fusion Domain,A;B;C,7U9G
+101,Fusion Domain,A;B;C,7U9G
+102,Fusion Domain,A;B;C,7U9G
+103,Fusion Domain,A;B;C,7U9G
+104,Fusion Domain,A;B;C,7U9G
+105,Fusion Domain,A;B;C,7U9G
+106,Fusion Domain,A;B;C,7U9G
+107,Fusion Domain,A;B;C,7U9G
+108,Fusion Domain,A;B;C,7U9G
+109,Fusion Domain,A;B;C,7U9G
+110,Fusion Domain,A;B;C,7U9G
+111,Fusion Domain,A;B;C,7U9G
+112,Fusion Domain,A;B;C,7U9G
+113,Fusion Domain,A;B;C,7U9G
+114,Fusion Domain,A;B;C,7U9G
+115,Fusion Domain,A;B;C,7U9G
+116,Fusion Domain,A;B;C,7U9G
+117,Fusion Domain,A;B;C,7U9G
+118,Fusion Domain,A;B;C,7U9G
+119,Fusion Domain,A;B;C,7U9G
+120,Fusion Domain,A;B;C,7U9G
+121,Fusion Domain,A;B;C,7U9G
+122,Fusion Domain,A;B;C,7U9G
+123,Fusion Domain,A;B;C,7U9G
+124,Fusion Domain,A;B;C,7U9G
+125,Fusion Domain,A;B;C,7U9G
+126,Fusion Domain,A;B;C,7U9G
+127,Fusion Domain,A;B;C,7U9G
+128,Fusion Domain,A;B;C,7U9G
+129,Fusion Domain,A;B;C,7U9G
+130,Fusion Domain,A;B;C,7U9G
+131,Fusion Domain,A;B;C,7U9G
+132,Fusion Domain,A;B;C,7U9G
+133,Fusion Domain,A;B;C,7U9G
+134,Fusion Domain,A;B;C,7U9G
+135,Fusion Domain,A;B;C,7U9G
+136,Fusion Domain,A;B;C,7U9G
+137,Fusion Domain,A;B;C,7U9G
+138,Fusion Domain,A;B;C,7U9G
+139,Fusion Domain,A;B;C,7U9G
+140,Fusion Domain,A;B;C,7U9G
+141,Fusion Domain,A;B;C,7U9G
+142,Fusion Domain,A;B;C,7U9G
+143,Fusion Domain,A;B;C,7U9G
+144,Fusion Domain,A;B;C,7U9G
+145,Fusion Domain,A;B;C,7U9G
+146,Fusion Domain,A;B;C,7U9G
+147,Fusion Domain,A;B;C,7U9G
+148,Fusion Domain,A;B;C,7U9G
+149,Fusion Domain,A;B;C,7U9G
+150,Fusion Domain,A;B;C,7U9G
+151,Fusion Domain,A;B;C,7U9G
+152,Fusion Domain,A;B;C,7U9G
+153,Fusion Domain,A;B;C,7U9G
+154,Fusion Domain,A;B;C,7U9G
+155,Fusion Domain,A;B;C,7U9G
+156,Fusion Domain,A;B;C,7U9G
+157,Fusion Domain,A;B;C,7U9G
+158,Fusion Domain,A;B;C,7U9G
+159,Fusion Domain,A;B;C,7U9G
+160,Fusion Domain,A;B;C,7U9G
+161,Fusion Domain,A;B;C,7U9G
+162,Fusion Domain,A;B;C,7U9G
+163,Fusion Domain,A;B;C,7U9G
+164,Fusion Domain,A;B;C,7U9G
+165,Fusion Domain,A;B;C,7U9G
+166,Fusion Domain,A;B;C,7U9G
+167,Fusion Domain,A;B;C,7U9G
+168,Fusion Domain,A;B;C,7U9G
+169,Fusion Domain,A;B;C,7U9G
+170,Fusion Domain,A;B;C,7U9G
+171,Fusion Domain,A;B;C,7U9G
+172,Fusion Domain,A;B;C,7U9G
+173,Fusion Domain,A;B;C,7U9G
+174,Fusion Domain,A;B;C,7U9G
+175,Fusion Domain,A;B;C,7U9G
+176,Fusion Domain,A;B;C,7U9G
+177,Fusion Domain,A;B;C,7U9G
+178,Fusion Domain,A;B;C,7U9G
+179,Fusion Domain,A;B;C,7U9G
+180,Linker,A;B;C,7U9G
+181,Linker,A;B;C,7U9G
+182,Linker,A;B;C,7U9G
+183,Linker,A;B;C,7U9G
+184,Linker,A;B;C,7U9G
+185,Linker,A;B;C,7U9G
+186,Linker,A;B;C,7U9G
+187,Linker,A;B;C,7U9G
+188,Linker,A;B;C,7U9G
+189,Linker,A;B;C,7U9G
+190,Linker,A;B;C,7U9G
+191,Linker,A;B;C,7U9G
+192,Pleckstrin Homology Domain,A;B;C,7U9G
+193,Pleckstrin Homology Domain,A;B;C,7U9G
+194,Pleckstrin Homology Domain,A;B;C,7U9G
+195,Pleckstrin Homology Domain,A;B;C,7U9G
+196,Pleckstrin Homology Domain,A;B;C,7U9G
+197,Pleckstrin Homology Domain,A;B;C,7U9G
+198,Pleckstrin Homology Domain,A;B;C,7U9G
+199,Pleckstrin Homology Domain,A;B;C,7U9G
+200,Pleckstrin Homology Domain,A;B;C,7U9G
+201,Pleckstrin Homology Domain,A;B;C,7U9G
+202,Pleckstrin Homology Domain,A;B;C,7U9G
+203,Pleckstrin Homology Domain,A;B;C,7U9G
+204,Pleckstrin Homology Domain,A;B;C,7U9G
+205,Pleckstrin Homology Domain,A;B;C,7U9G
+206,Pleckstrin Homology Domain,A;B;C,7U9G
+207,Pleckstrin Homology Domain,A;B;C,7U9G
+208,Pleckstrin Homology Domain,A;B;C,7U9G
+209,Pleckstrin Homology Domain,A;B;C,7U9G
+210,Pleckstrin Homology Domain,A;B;C,7U9G
+211,Pleckstrin Homology Domain,A;B;C,7U9G
+212,Pleckstrin Homology Domain,A;B;C,7U9G
+213,Pleckstrin Homology Domain,A;B;C,7U9G
+214,Pleckstrin Homology Domain,A;B;C,7U9G
+215,Pleckstrin Homology Domain,A;B;C,7U9G
+216,Pleckstrin Homology Domain,A;B;C,7U9G
+217,Pleckstrin Homology Domain,A;B;C,7U9G
+218,Pleckstrin Homology Domain,A;B;C,7U9G
+219,Pleckstrin Homology Domain,A;B;C,7U9G
+220,Pleckstrin Homology Domain,A;B;C,7U9G
+221,Pleckstrin Homology Domain,A;B;C,7U9G
+222,Pleckstrin Homology Domain,A;B;C,7U9G
+223,Pleckstrin Homology Domain,A;B;C,7U9G
+224,Pleckstrin Homology Domain,A;B;C,7U9G
+225,Pleckstrin Homology Domain,A;B;C,7U9G
+226,Pleckstrin Homology Domain,A;B;C,7U9G
+227,Pleckstrin Homology Domain,A;B;C,7U9G
+228,Pleckstrin Homology Domain,A;B;C,7U9G
+229,Pleckstrin Homology Domain,A;B;C,7U9G
+230,Pleckstrin Homology Domain,A;B;C,7U9G
+231,Pleckstrin Homology Domain,A;B;C,7U9G
+232,Pleckstrin Homology Domain,A;B;C,7U9G
+233,Pleckstrin Homology Domain,A;B;C,7U9G
+234,Pleckstrin Homology Domain,A;B;C,7U9G
+235,Pleckstrin Homology Domain,A;B;C,7U9G
+236,Pleckstrin Homology Domain,A;B;C,7U9G
+237,Pleckstrin Homology Domain,A;B;C,7U9G
+238,Pleckstrin Homology Domain,A;B;C,7U9G
+239,Pleckstrin Homology Domain,A;B;C,7U9G
+240,Pleckstrin Homology Domain,A;B;C,7U9G
+241,Pleckstrin Homology Domain,A;B;C,7U9G
+242,Pleckstrin Homology Domain,A;B;C,7U9G
+243,Pleckstrin Homology Domain,A;B;C,7U9G
+244,Pleckstrin Homology Domain,A;B;C,7U9G
+245,Pleckstrin Homology Domain,A;B;C,7U9G
+246,Pleckstrin Homology Domain,A;B;C,7U9G
+247,Pleckstrin Homology Domain,A;B;C,7U9G
+248,Pleckstrin Homology Domain,A;B;C,7U9G
+249,Pleckstrin Homology Domain,A;B;C,7U9G
+250,Pleckstrin Homology Domain,A;B;C,7U9G
+251,Pleckstrin Homology Domain,A;B;C,7U9G
+252,Pleckstrin Homology Domain,A;B;C,7U9G
+253,Pleckstrin Homology Domain,A;B;C,7U9G
+254,Linker,A;B;C,7U9G
+255,Linker,A;B;C,7U9G
+256,Linker,A;B;C,7U9G
+257,Linker,A;B;C,7U9G
+258,Linker,A;B;C,7U9G
+259,Linker,A;B;C,7U9G
+260,Linker,A;B;C,7U9G
+261,Linker,A;B;C,7U9G
+262,Linker,A;B;C,7U9G
+263,Linker,A;B;C,7U9G
+264,Linker,A;B;C,7U9G
+265,Linker,A;B;C,7U9G
+266,Linker,A;B;C,7U9G
+267,Linker,A;B;C,7U9G
+268,Linker,A;B;C,7U9G
+269,Linker,A;B;C,7U9G
+270,Linker,A;B;C,7U9G
+271,Linker,A;B;C,7U9G
+272,Linker,A;B;C,7U9G
+273,Central Domain,A;B;C,7U9G
+274,Central Domain,A;B;C,7U9G
+275,Central Domain,A;B;C,7U9G
+276,Central Domain,A;B;C,7U9G
+277,Central Domain,A;B;C,7U9G
+278,Central Domain,A;B;C,7U9G
+279,Central Domain,A;B;C,7U9G
+280,Central Domain,A;B;C,7U9G
+281,Central Domain,A;B;C,7U9G
+282,Central Domain,A;B;C,7U9G
+283,Central Domain,A;B;C,7U9G
+284,Central Domain,A;B;C,7U9G
+285,Central Domain,A;B;C,7U9G
+286,Central Domain,A;B;C,7U9G
+287,Central Domain,A;B;C,7U9G
+288,Central Domain,A;B;C,7U9G
+289,Central Domain,A;B;C,7U9G
+290,Central Domain,A;B;C,7U9G
+291,Central Domain,A;B;C,7U9G
+292,Central Domain,A;B;C,7U9G
+293,Central Domain,A;B;C,7U9G
+294,Central Domain,A;B;C,7U9G
+295,Central Domain,A;B;C,7U9G
+296,Central Domain,A;B;C,7U9G
+297,Central Domain,A;B;C,7U9G
+298,Central Domain,A;B;C,7U9G
+299,Central Domain,A;B;C,7U9G
+300,Central Domain,A;B;C,7U9G
+301,Central Domain,A;B;C,7U9G
+302,Central Domain,A;B;C,7U9G
+303,Central Domain,A;B;C,7U9G
+304,Central Domain,A;B;C,7U9G
+305,Central Domain,A;B;C,7U9G
+306,Central Domain,A;B;C,7U9G
+307,Central Domain,A;B;C,7U9G
+308,Central Domain,A;B;C,7U9G
+309,Central Domain,A;B;C,7U9G
+310,Central Domain,A;B;C,7U9G
+311,Central Domain,A;B;C,7U9G
+312,Central Domain,A;B;C,7U9G
+313,Central Domain,A;B;C,7U9G
+314,Central Domain,A;B;C,7U9G
+315,Central Domain,A;B;C,7U9G
+316,Central Domain,A;B;C,7U9G
+317,Central Domain,A;B;C,7U9G
+318,Central Domain,A;B;C,7U9G
+319,Central Domain,A;B;C,7U9G
+320,Central Domain,A;B;C,7U9G
+321,Central Domain,A;B;C,7U9G
+322,Central Domain,A;B;C,7U9G
+323,Central Domain,A;B;C,7U9G
+324,Central Domain,A;B;C,7U9G
+325,Central Domain,A;B;C,7U9G
+326,Central Domain,A;B;C,7U9G
+327,Central Domain,A;B;C,7U9G
+328,Central Domain,A;B;C,7U9G
+329,Central Domain,A;B;C,7U9G
+330,Central Domain,A;B;C,7U9G
+331,Central Domain,A;B;C,7U9G
+332,Central Domain,A;B;C,7U9G
+333,Central Domain,A;B;C,7U9G
+334,Central Domain,A;B;C,7U9G
+335,Central Domain,A;B;C,7U9G
+336,Central Domain,A;B;C,7U9G
+337,Central Domain,A;B;C,7U9G
+338,Central Domain,A;B;C,7U9G
+339,Central Domain,A;B;C,7U9G
+340,Central Domain,A;B;C,7U9G
+341,Central Domain,A;B;C,7U9G
+342,Central Domain,A;B;C,7U9G
+343,Central Domain,A;B;C,7U9G
+344,Central Domain,A;B;C,7U9G
+345,Central Domain,A;B;C,7U9G
+346,Central Domain,A;B;C,7U9G
+347,Central Domain,A;B;C,7U9G
+348,Central Domain,A;B;C,7U9G
+349,Central Domain,A;B;C,7U9G
+350,Central Domain,A;B;C,7U9G
+351,Central Domain,A;B;C,7U9G
+352,Central Domain,A;B;C,7U9G
+353,Central Domain,A;B;C,7U9G
+354,Central Domain,A;B;C,7U9G
+355,Central Domain,A;B;C,7U9G
+356,Central Domain,A;B;C,7U9G
+357,Central Domain,A;B;C,7U9G
+358,Central Domain,A;B;C,7U9G
+359,Central Domain,A;B;C,7U9G
+360,Central Domain,A;B;C,7U9G
+361,Central Domain,A;B;C,7U9G
+362,Central Domain,A;B;C,7U9G
+363,Central Domain,A;B;C,7U9G
+364,Central Domain,A;B;C,7U9G
+365,Central Domain,A;B;C,7U9G
+366,Central Domain,A;B;C,7U9G
+367,Central Domain,A;B;C,7U9G
+368,Central Domain,A;B;C,7U9G
+369,Central Domain,A;B;C,7U9G
+370,Central Domain,A;B;C,7U9G
+371,Central Domain,A;B;C,7U9G
+372,Central Domain,A;B;C,7U9G
+373,Central Domain,A;B;C,7U9G
+374,Linker,A;B;C,7U9G
+375,Linker,A;B;C,7U9G
+376,Linker,A;B;C,7U9G
+377,Linker,A;B;C,7U9G
+378,Linker,A;B;C,7U9G
+379,Linker,A;B;C,7U9G
+380,Linker,A;B;C,7U9G
+381,Linker,A;B;C,7U9G
+382,Linker,A;B;C,7U9G
+383,Linker,A;B;C,7U9G
+384,Linker,A;B;C,7U9G
+385,Linker,A;B;C,7U9G
+386,Linker,A;B;C,7U9G
+387,Linker,A;B;C,7U9G
+388,Linker,A;B;C,7U9G
+389,Linker,A;B;C,7U9G
+390,Linker,A;B;C,7U9G
+391,Linker,A;B;C,7U9G
+392,Linker,A;B;C,7U9G
+393,Linker,A;B;C,7U9G
+394,Linker,A;B;C,7U9G
+395,Linker,A;B;C,7U9G
+396,Linker,A;B;C,7U9G
+397,Linker,A;B;C,7U9G
+398,Linker,A;B;C,7U9G
+399,Linker,A;B;C,7U9G
+400,C-Terminal,A;B;C,7U9G
+401,C-Terminal,A;B;C,7U9G
+402,C-Terminal,A;B;C,7U9G
+403,C-Terminal,A;B;C,7U9G
+404,C-Terminal,A;B;C,7U9G
+405,C-Terminal,A;B;C,7U9G
+406,C-Terminal,A;B;C,7U9G
+407,C-Terminal,A;B;C,7U9G
+408,C-Terminal,A;B;C,7U9G
+409,C-Terminal,A;B;C,7U9G
+410,C-Terminal,A;B;C,7U9G
+411,C-Terminal,A;B;C,7U9G
+412,C-Terminal,A;B;C,7U9G
+413,C-Terminal,A;B;C,7U9G
+414,C-Terminal,A;B;C,7U9G
+415,C-Terminal,A;B;C,7U9G
+416,C-Terminal,A;B;C,7U9G
+417,C-Terminal,A;B;C,7U9G
+418,C-Terminal,A;B;C,7U9G
+419,C-Terminal,A;B;C,7U9G
+420,C-Terminal,A;B;C,7U9G
+421,C-Terminal,A;B;C,7U9G
+422,C-Terminal,A;B;C,7U9G
+423,C-Terminal,A;B;C,7U9G
+424,C-Terminal,A;B;C,7U9G
+425,C-Terminal,A;B;C,7U9G
+426,C-Terminal,A;B;C,7U9G
+427,C-Terminal,A;B;C,7U9G
+428,C-Terminal,A;B;C,7U9G
+429,C-Terminal,A;B;C,7U9G
+430,C-Terminal,A;B;C,7U9G
+431,C-Terminal,A;B;C,7U9G
