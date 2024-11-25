@@ -1,6 +1,6 @@
 <script setup>
-import ProteinViewer from './protein/ProteinViewer.vue';
-import UploadCSV from '@/upload/UploadCSV.vue';
+import ProteinViewer from '@/components/protein/ProteinViewer.vue';
+import UploadCSV from '@/components/upload/UploadCSV.vue';
 </script>
 
 <template>
