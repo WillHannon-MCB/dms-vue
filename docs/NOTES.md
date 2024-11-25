@@ -91,222 +91,61 @@ The bottom line is that frameworks make applications faster to build, easier to 
 
 ## Status
 
-### Code Organization
+I think it would be wise to refactor the code into the following design pattern:
+
+`Services` -> `Stores` -> `Composables`-> `Components`
+
+The `Services` files are objects that encapsulate static methods and shared logic for things like data parsing, and creating a Mol\* plugin. Essentially, `Services` are like more organized versions of files with "utility" functions.
+
+The `Stores` hold the state of the application. Each store is associated with a different piece of reactive state (the protein's state, selected residues, user data, configuration options, etc...) that various aspects of the application depend on. When these pieces of state change, the application listens and updates accordingly.
+
+The `Composables` hold the logic for _how_ the application should update when data in the store changes. This can live in a `Component`, but `Composables` can share reactive logic between multiple `Components`.
+
+The `Components` hold the basic logic for how the user interacts with the application. They also hold the HTML template and CSS style for each piece of the UI.
+
+### Proposed Code Organization
+
+I think the follow code organization makes the most sense:
 
 ```bash
-src
-├── App.vue
-├── assets
-│   ├── css
-│   │   ├── base.css
-│   │   └── main.css
-│   ├── data
-│   │   └── residueData.json
-│   └── images
-│       └── logo.svg
-├── components
-│   └── icons
-│       └── IconDocumentation.vue
-├── main.js
-├── protein
-│   └── ProteinViewer.vue
-├── stores
-│   ├── color.js
-│   ├── config.js
-│   └── data.js
-├── upload
-│   └── UploadCSV.vue
-└── utils
-    ├── data
-    │   └── process-input-data.js
-    ├── molstar
-    │   ├── custom-element.js
-    │   └── viewer-config.js
-    └── scales
-        └── color-scales.js
-```
-
-### Data flow
-
-1. Users upload a CSV to the `UploadCSV.vue` component. The raw data gets added to the store `data.js`.
-
-```js
-export const useDataStore = defineStore('data', {
-  state: () => ({
-    rawData: null,
-    successMessage: '',
-    errorMessage: '',
-  }),
-
-  actions: {
-    async uploadData(csvText, fileName = null) {
-      try {
-        console.log(fileName)
-        // Parse the CSV data
-        const parsedData = parseCsvData(csvText)
-        // Update the store with valid data
-        this.rawData = parsedData
-        console.log('Data uploaded and validated:', this.rawData)
-        this.successMessage = fileName
-          ? `File "${fileName}" uploaded and validated successfully!`
-          : 'Data uploaded and validated successfully!'
-        this.errorMessage = ''
-      } catch (error) {
-        this.rawData = null
-        this.successMessage = ''
-        this.errorMessage = `Error processing CSV: ${error.message}`
-        throw error
-      }
-    },
-  },
-
-  getters: {
-    models(state) {
-      if (!state.rawData) return []
-      const models = state.rawData.flatMap((row) => row.model.split(':'))
-      return Array.from(new Set(models))
-    },
-    structures() {
-      return this.models.map((model) => ({
-        url: `https://www.ebi.ac.uk/pdbe/static/entry/${model.toLowerCase()}_updated.cif`,
-        format: 'mmcif',
-        assemblyId: '1',
-        isBinary: false,
-      }))
-    },
-    conditions(state) {
-      if (!state.rawData || !state.rawData[0]?.condition) {
-        return []
-      }
-      return Array.from(new Set(state.rawData.map((row) => row.condition)))
-    },
-  },
-})
-```
-
-2. The data is parsed and validated with functions from `utils/data/process-input-data.js`.
-
-3. Eventually, the raw data will configure a UI component called `ui/config/ConfigureViewer.vue` or something like that. Those choices will populate the store `config.js`. For now, I'm hard-coding values based on the dataset I'm testing with.
-
-```js
-import { defineStore } from 'pinia'
-
-export const useConfigStore = defineStore('config', {
-  state: () => ({
-    residueColumns: ['max_mut_escape'], // Hardcoded example columns
-  }),
-
-  getters: {
-    selectedResidueColumns(state) {
-      return state.residueColumns
-    },
-  },
-})
-```
-
-4. After the data's been upload and configuration setting have been chosen, the application makes color schemes (molstar CustomElementProperties) for the protein models. Those are stored in `color.js`:
-
-```js
-export const useColorStore = defineStore('color', {
-  state: () => ({
-    customElements: {},
-  }),
-
-  actions: {
-    generateCustomElements() {
-      const dataStore = useDataStore()
-      const configStore = useConfigStore()
-
-      if (!dataStore.rawData || !configStore.residueColumns.length) {
-        console.warn('Data or configuration is missing. Cannot generate custom elements.')
-        return
-      }
-
-      // Access raw (non-proxy) data
-      const rawData = toRaw(dataStore.rawData)
-
-      const residueColumns = configStore.residueColumns
-      const conditions = dataStore.conditions.length ? dataStore.conditions : [null]
-
-      residueColumns.forEach((column) => {
-        conditions.forEach((condition) => {
-          const key = condition ? `${condition}-${column}` : column
-          console.log('Generating custom element:', key)
-
-          const customElement = createCustomResidueColoring(column, condition, rawData)
-          this.customElements[key] = customElement
-        })
-      })
-    },
-  },
-})
-```
-
-I have a simple factory function for making these color objects in `utils/molstar/custom-element.js`:
-
-```js
-/**
- * Factory function to create a CustomElementProperty for Mol*.
- *
- * @param {string} column - The metric column to aggregate.
- * @param {string} [condition] - The condition column to filter on (optional).
- * @param {Array} rawData - The input raw data array.
- * @returns {CustomElementProperty} - A configured CustomElementProperty.
- */
-export function createCustomResidueColoring(column, condition, rawData) {
-  if (!rawData || !column) {
-    throw new Error('Both rawData and column are required.')
-  }
-
-  // Process residue data for the given column and condition
-  const processedData = processResidueData(rawData, column, condition)
-
-  // Generate a color scale based on the processed data
-  const residueColorScale = generateSequentialColorScale(processedData, 'value')
-
-  return CustomElementProperty.create({
-    label: `${column}${condition ? ` for ${condition}` : ''}`,
-    name: `${condition ? `${condition}-${column}` : column}`,
-    async getData(model) {
-      const residueColorMap = new Map()
-
-      // Map processed data for quick lookup
-      const dataMap = processedData.reduce((map, entry) => {
-        const key = `${entry.chain}:${entry.residue}`
-        map.set(key, entry.value)
-        return map
-      }, new Map())
-
-      const { _rowCount: residueCount } = model.atomicHierarchy.residues
-      const { offsets: residueOffsets } = model.atomicHierarchy.residueAtomSegments
-      const chainIndex = model.atomicHierarchy.chainAtomSegments.index
-
-      for (let rI = 0; rI < residueCount; rI++) {
-        const cI = chainIndex[residueOffsets[rI]]
-        const key = `${model.atomicHierarchy.chains.auth_asym_id.value(cI)}:${model.atomicHierarchy.residues.auth_seq_id.value(rI)}`
-
-        if (!dataMap.has(key)) continue
-        const ann = dataMap.get(key)
-
-        for (let aI = residueOffsets[rI]; aI < residueOffsets[rI + 1]; aI++) {
-          residueColorMap.set(aI, ann)
-        }
-      }
-      console.log(residueColorMap)
-      return { value: residueColorMap }
-    },
-    coloring: {
-      getColor(value) {
-        // Use the custom color scale based on the provided column
-        console.log(value)
-        console.log(residueColorScale(value))
-        return Color.fromHexStyle(residueColorScale(value))
-      },
-      defaultColor: Color(0x777777), // Default color for residues without data
-    },
-    getLabel(value) {
-      return `${column} Score: ${value}`
-    },
-  })
-}
+src/
+├── services/
+│   ├── molstar/
+│   │   ├── plugin-service.js      # Core Mol* operations
+│   │   ├── coloring-service.js    # Custom coloring/themes
+│   │   └── structure-service.js   # Structure loading/manipulation
+│   ├── data/
+│   │   ├── parser-service.js      # CSV parsing, data validation
+│   │   ├── processor-service.js   # Data transformations for viz
+│   │   └── export-service.js      # State/data export functionality
+│   └── viz/
+│       ├── color-service.js       # Color scale generation
+│       └── plot-service.js        # Plot data preparation
+│
+├── stores/
+│   ├── plugin.js       # Mol* plugin instance & state
+│   ├── data.js         # Raw/processed data management
+│   ├── config.js       # User configuration choices
+│   ├── selection.js    # Selected residues/mutations
+│   └── visualization.js # Plot & protein viz state
+│
+├── composables/
+│   ├── useProteinViewer.js    # Protein viewer setup/interactions
+│   ├── useDataProcessing.js   # Data processing workflow
+│   ├── useColorScales.js      # Color scale management
+│   └── usePlotInteractions.js # Plot interactivity
+│
+└── components/
+    ├── upload/
+    │   ├── DataUpload.vue        # CSV upload
+    │   └── ValidationReport.vue   # Data validation feedback
+    ├── config/
+    │   ├── ConfigForm.vue        # Main config form
+    │   ├── ColorScaleConfig.vue  # Color scale options
+    │   └── VisualizationConfig.vue # Plot/protein options
+    ├── protein/
+    │   ├── ProteinViewer.vue     # Main protein viewer
+    │   ├── ViewerControls.vue    # Viewer UI controls
+    │   └── ColoringLegend.vue    # Color scheme legend
+    └── plots/                    # Future plot components
 ```
