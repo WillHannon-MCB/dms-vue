@@ -1,25 +1,45 @@
-import { csvParse } from 'd3-dsv'
+import { csvParse, autoType } from 'd3-dsv'
 
 /**
- * Reads CSV data, validates it, and converts it into an array of objects.
- * @param {string} csvText - The CSV content as a string.
- * @param {Array<string>} residueLevelDataColumns - User-specified residue-level data columns.
- * @returns {Array<Object>} - An array of validated parsed objects.
+ * Parses a string in the input data containing multiple values
+ * @param {string} str - String containing multiple values (e.g., "6XR8:6XRA" or "A;B;C:A;B;C")
+ * @param {string} primaryDelimiter - Primary delimiter (e.g., ":" split between model groups)
+ * @param {string} secondaryDelimiter - Secondary delimiter (e.g., ";" split within model groups)
+ * @returns {Array<Array<string>>} Array of arrays containing parsed values
  */
-export function parseCsvData(csvText, residueLevelDataColumns = []) {
-  try {
-    // Use d3-dsv's row conversion function to process data
-    const parsedData = csvParse(csvText, (row) => {
-      Object.keys(row).forEach((key) => {
-        // Convert values to numbers if they look numeric
-        if (!isNaN(row[key]) && row[key].trim() !== '') {
-          row[key] = +row[key] // Convert to number
-        }
-      })
-      return row
-    })
+function parseDelimitedValues(str, primaryDelimiter = ':', secondaryDelimiter = ';') {
+  return str
+    .split(primaryDelimiter)
+    .map((group) => group.split(secondaryDelimiter).map((val) => val.trim()))
+}
 
-    validateCsvData(parsedData, residueLevelDataColumns)
+/**
+ * Parses CSV data with automatic type inference and model/chain parsing
+ * @param {string} csvText - The CSV content as a string
+ * @returns {Array<Object>} Array of parsed objects
+ */
+export function parseCsvData(csvText) {
+  try {
+    // First pass: automatic type inference
+    const autoTypedData = csvParse(csvText, autoType)
+
+    // Validate the data structure
+    validateCsvData(autoTypedData)
+
+    // Second pass: parse model and chain fields
+    const parsedData = autoTypedData.map((row) => {
+      // Create a new object to avoid modifying the original
+      const newRow = { ...row }
+
+      if (newRow.model) {
+        newRow._parsed_models = parseDelimitedValues(newRow.model)
+      }
+      if (newRow.chain) {
+        newRow._parsed_chains = parseDelimitedValues(newRow.chain)
+      }
+
+      return newRow
+    })
     return parsedData
   } catch (error) {
     console.error('Error processing CSV data:', error)
@@ -28,63 +48,25 @@ export function parseCsvData(csvText, residueLevelDataColumns = []) {
 }
 
 /**
- * Utility functions for validating user-supplied input data.
- */
-
-/**
- * Validate user-supplied CSV data.
+ * Validate user-supplied CSV data structure before processing.
  * @param {Array<Object>} data - Parsed CSV data as an array of objects.
- * @param {Array<string>} residueLevelDataColumns - User-specified residue-level data columns.
  * @returns {boolean} - True if the data is valid, otherwise throws an error.
  * @throws {Error} - If validation fails.
  */
-export function validateCsvData(data, residueLevelDataColumns = []) {
+export function validateCsvData(data) {
+  // Check for empty data
   if (!Array.isArray(data) || data.length === 0) {
     throw new Error('CSV data is empty or invalid.')
   }
 
-  // Required columns
-  const requiredColumns = ['residue', 'chain', 'model']
-
   // Check for required columns
+  const requiredColumns = ['residue', 'chain', 'model']
   const csvColumns = Object.keys(data[0])
   requiredColumns.forEach((col) => {
     if (!csvColumns.includes(col)) {
       throw new Error(`Missing required column: ${col}`)
     }
   })
-
-  // Check for user-specified residue-level data columns
-  residueLevelDataColumns.forEach((col) => {
-    if (!csvColumns.includes(col)) {
-      throw new Error(`Missing user-specified residue-level data column: ${col}`)
-    }
-  })
-
-  // Check for condition column if duplicate model-chain-residue exists
-  const seenResidues = new Set()
-  for (const row of data) {
-    const key = `${row.model}-${row.chain}-${row.residue}`
-    if (seenResidues.has(key) && !csvColumns.includes('condition')) {
-      throw new Error(`Duplicate model-chain-residue detected without a 'condition' column: ${key}`)
-    }
-    seenResidues.add(key)
-  }
-
-  // Check for mutant column if multiple entries exist for model-condition-residue-chain
-  const modelConditionResidueChainMap = new Map()
-  for (const row of data) {
-    const key = `${row.model}-${row.condition || ''}-${row.residue}-${row.chain}`
-    if (modelConditionResidueChainMap.has(key)) {
-      if (!csvColumns.includes('mutant')) {
-        throw new Error(
-          `Multiple entries detected for model-condition-residue-chain (${key}), but 'mutant' column is missing.`,
-        )
-      }
-    } else {
-      modelConditionResidueChainMap.set(key, true)
-    }
-  }
 
   return true
 }

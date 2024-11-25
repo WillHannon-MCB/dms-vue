@@ -11,10 +11,7 @@ export const useDataStore = defineStore('data', {
   actions: {
     async uploadData(csvText, fileName = null) {
       try {
-        console.log(fileName)
-        // Parse the CSV data
         const parsedData = parseCsvData(csvText)
-        // Update the store with valid data
         this.rawData = parsedData
         console.log('Data uploaded and validated:', this.rawData)
         this.successMessage = fileName
@@ -31,11 +28,38 @@ export const useDataStore = defineStore('data', {
   },
 
   getters: {
+    // Get all unique models across all entries
     models(state) {
       if (!state.rawData) return []
-      const models = state.rawData.flatMap((row) => row.model.split(':'))
-      return Array.from(new Set(models))
+      return Array.from(new Set(state.rawData.flatMap((row) => row._parsed_models?.flat() ?? [])))
     },
+
+    // Get model-chain mappings
+    modelChainMap(state) {
+      if (!state.rawData) return new Map()
+
+      const mapping = new Map()
+
+      state.rawData.forEach((row) => {
+        if (!row._parsed_models || !row._parsed_chains) return
+
+        row._parsed_models.forEach((modelGroup, groupIndex) => {
+          const chainGroup = row._parsed_chains[groupIndex]
+          modelGroup.forEach((model) => {
+            if (!mapping.has(model)) {
+              mapping.set(model, new Set())
+            }
+            chainGroup.forEach((chain) => {
+              mapping.get(model).add(chain)
+            })
+          })
+        })
+      })
+
+      return mapping
+    },
+
+    // Get structure configuration objects for Mol*
     structures() {
       return this.models.map((model) => ({
         url: `https://www.ebi.ac.uk/pdbe/static/entry/${model.toLowerCase()}_updated.cif`,
@@ -44,11 +68,18 @@ export const useDataStore = defineStore('data', {
         isBinary: false,
       }))
     },
+
+    // Get conditions if they exist
     conditions(state) {
       if (!state.rawData || !state.rawData[0]?.condition) {
         return []
       }
       return Array.from(new Set(state.rawData.map((row) => row.condition)))
+    },
+
+    // Check if data has mutations
+    hasMutations(state) {
+      return state.rawData?.[0]?.mutant !== undefined
     },
   },
 })
