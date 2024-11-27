@@ -50,14 +50,11 @@ export function createCustomResidueColoring(column, condition, rawData) {
           residueColorMap.set(aI, ann)
         }
       }
-      console.log(residueColorMap)
       return { value: residueColorMap }
     },
     coloring: {
       getColor(value) {
         // Use the custom color scale based on the provided column
-        console.log(value)
-        console.log(residueColorScale(value))
         return Color.fromHexStyle(residueColorScale(value))
       },
       defaultColor: Color(0x777777), // Default color for residues without data
