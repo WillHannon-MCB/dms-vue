@@ -92,19 +92,16 @@ export function useMolstarPlugin(containerRef) {
   )
 
   // Data and config watcher
-  watch(
-    [() => dataStore.rawData, () => configStore.residueColumns],
-    ([rawData, residueColumns]) => {
-      if (rawData && residueColumns.length) {
-        try {
-          clearError()
-          colorStore.generateCustomElements()
-        } catch (err) {
-          handleError('Failed to generate custom elements', err)
-        }
+  watch([() => dataStore.data, () => configStore.residueColumns], ([data, residueColumns]) => {
+    if (data && residueColumns.length) {
+      try {
+        clearError()
+        colorStore.generateCustomElements()
+      } catch (err) {
+        handleError('Failed to generate custom elements', err)
       }
-    },
-  )
+    }
+  })
 
   // Register cleanup at the top level
   onBeforeUnmount(() => {

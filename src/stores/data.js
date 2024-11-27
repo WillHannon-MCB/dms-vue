@@ -1,85 +1,69 @@
 import { defineStore } from 'pinia'
-import { parseCsvData } from '@/utils/data/process-input-data'
+import { DataProcessingService } from '@/services/data/processing'
 
 export const useDataStore = defineStore('data', {
   state: () => ({
-    rawData: null,
-    successMessage: '',
-    errorMessage: '',
+    data: null,
+    status: {
+      message: '',
+      type: null, // 'success' | 'error' | null
+    },
   }),
 
   actions: {
-    async uploadData(csvText, fileName = null) {
+    async processData(csvText) {
       try {
-        const parsedData = parseCsvData(csvText)
-        this.rawData = parsedData
-        console.log('Data uploaded and validated:', this.rawData)
-        this.successMessage = fileName
-          ? `File "${fileName}" uploaded and validated successfully!`
-          : 'Data uploaded and validated successfully!'
-        this.errorMessage = ''
+        const parsedData = await DataProcessingService.parseCSV(csvText)
+        this.data = parsedData
+        this.status = { message: 'Success!', type: 'success' }
       } catch (error) {
-        this.rawData = null
-        this.successMessage = ''
-        this.errorMessage = `Error processing CSV: ${error.message}`
+        this.data = null
+        this.status = { message: error.message, type: 'error' }
         throw error
       }
+    },
+
+    clearStatus() {
+      this.status = { message: '', type: null }
     },
   },
 
   getters: {
-    // Get all unique models across all entries
-    models(state) {
-      if (!state.rawData) return []
-      return Array.from(new Set(state.rawData.flatMap((row) => row._parsed_models?.flat() ?? [])))
+    models: (state) => {
+      if (!state.data) return []
+      return Array.from(new Set(state.data.flatMap((row) => row._parsed_models?.flat() ?? [])))
     },
 
-    // Get model-chain mappings
-    modelChainMap(state) {
-      if (!state.rawData) return new Map()
+    modelChainMap: (state) => {
+      if (!state.data) return new Map()
 
-      const mapping = new Map()
-
-      state.rawData.forEach((row) => {
-        if (!row._parsed_models || !row._parsed_chains) return
+      return state.data.reduce((mapping, row) => {
+        if (!row._parsed_models || !row._parsed_chains) return mapping
 
         row._parsed_models.forEach((modelGroup, groupIndex) => {
           const chainGroup = row._parsed_chains[groupIndex]
           modelGroup.forEach((model) => {
-            if (!mapping.has(model)) {
-              mapping.set(model, new Set())
-            }
-            chainGroup.forEach((chain) => {
-              mapping.get(model).add(chain)
-            })
+            if (!mapping.has(model)) mapping.set(model, new Set())
+            chainGroup.forEach((chain) => mapping.get(model).add(chain))
           })
         })
-      })
-
-      return mapping
+        return mapping
+      }, new Map())
     },
 
-    // Get structure configuration objects for Mol*
-    structures() {
-      return this.models.map((model) => ({
-        url: `https://www.ebi.ac.uk/pdbe/static/entry/${model.toLowerCase()}_updated.cif`,
+    structures: (state) =>
+      state.models.map((model) => ({
+        url: DataProcessingService.getStructureUrl(model),
         format: 'mmcif',
         assemblyId: '1',
         isBinary: false,
-      }))
+      })),
+
+    conditions: (state) => {
+      if (!state.data?.[0]?.condition) return []
+      return Array.from(new Set(state.data.map((row) => row.condition)))
     },
 
-    // Get conditions if they exist
-    conditions(state) {
-      if (!state.rawData || !state.rawData[0]?.condition) {
-        return []
-      }
-      return Array.from(new Set(state.rawData.map((row) => row.condition)))
-    },
-
-    // Check if data has mutations
-    hasMutations(state) {
-      return state.rawData?.[0]?.mutant !== undefined
-    },
+    hasMutations: (state) => state.data?.[0]?.mutant !== undefined,
   },
 })
