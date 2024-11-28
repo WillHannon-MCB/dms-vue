@@ -4,8 +4,8 @@ import { useDataStore } from './data'
 export const useConfigStore = defineStore('config', {
   state: () => ({
     // Core configuration
-    residueColumns: ['max_mut_escape'], // Selected columns containing residue-level data
-    conditions: ['REGN10933'], // Selected conditions to visualize
+    residueColumns: ['max_effect', 'mean_effect'], // Selected columns containing residue-level data
+    conditions: ['TIM1', 'MXRA8', 'C636'], // Selected conditions to visualize
     // Detailed settings for each residue data column
     residueSettings: {
       // Example structure:
