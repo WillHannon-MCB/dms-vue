@@ -1,3 +1,8 @@
+/**
+ *
+ * A collection of functions to deal with residue-level data processing.
+ *
+ */
 export const ResidueDataService = {
   /**
    * Validates input data for residue processing
@@ -31,6 +36,29 @@ export const ResidueDataService = {
         throw new Error('Condition must be a non-empty string if provided.')
       }
     })
+  },
+
+  /**
+   * Checks if a column contains numeric or categorical data using d3's type inference
+   * @param {Array} data - The input data array
+   * @param {string} column - The column name to check
+   * @returns {Object} - Type info and optional warning
+   */
+  detectColumnType(data, column) {
+    const values = data.map((d) => d[column]).filter((v) => v != null)
+
+    // Check if all values are numbers
+    const isNumeric = values.every((v) => !isNaN(parseFloat(v)) && isFinite(v))
+    const uniqueValues = new Set(values)
+
+    return {
+      type: isNumeric ? 'numeric' : 'categorical',
+      uniqueValues: Array.from(uniqueValues),
+      warning:
+        !isNumeric && uniqueValues.size > 10
+          ? `Column "${column}" has ${uniqueValues.size} unique categories. Colors may repeat.`
+          : null,
+    }
   },
 
   /**
@@ -128,7 +156,7 @@ export const ResidueDataService = {
    * @param {Array} data - The input data array.
    * @param {string} column - The metric column to aggregate.
    * @param {string} [condition] - The condition to filter on (optional).
-   * @returns {Array} - Processed data array
+   * @returns {Object} - The processed data and statistics.
    */
   processSingleMetric(data, column, condition = null) {
     // Filter by condition if provided
@@ -152,6 +180,21 @@ export const ResidueDataService = {
       valueRange: { min: Infinity, max: -Infinity },
     }
 
+    // Detect column type
+    const typeInfo = this.detectColumnType(filteredData, column)
+    if (typeInfo.warning) {
+      console.warn(`[ResidueDataService] ${typeInfo.warning}`)
+    }
+
+    // Track additional stats for categorical data
+    if (typeInfo.type === 'categorical') {
+      stats.type = typeInfo.type
+      stats.nCategories = typeInfo.uniqueValues
+      console.info(
+        `  • Contains ${stats.nCategories.length} unique categories: ${stats.nCategories.join(', ')}`,
+      )
+    }
+
     // Filter and count entries with missing structural data
     const structuralData = filteredData.filter((entry) => {
       const hasStructuralInfo = entry.residue && entry.chain && entry.model
@@ -162,6 +205,7 @@ export const ResidueDataService = {
       }
 
       stats.valid++
+
       // Track unique elements
       entry.model.split(':').forEach((m) => stats.models.add(m))
       entry.chain
@@ -171,8 +215,10 @@ export const ResidueDataService = {
 
       // Track value range
       const value = entry[column]
-      stats.valueRange.min = Math.min(stats.valueRange.min, value)
-      stats.valueRange.max = Math.max(stats.valueRange.max, value)
+      if (typeInfo.type === 'numeric') {
+        stats.valueRange.min = Math.min(stats.valueRange.min, value)
+        stats.valueRange.max = Math.max(stats.valueRange.max, value)
+      }
 
       return true
     })
