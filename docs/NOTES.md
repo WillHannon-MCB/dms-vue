@@ -99,12 +99,12 @@ Services -> Stores -> Composables -> Components
 
 ## To Do
 
-1. Make sure the residue data processing and custom element generation are robust to different data types, specifically the example datasets.
+1. Although it's possible to use categorical and numeric color scales, there's basically no type safety, documentation, or error checking. So, I need to go through the code carefully and make sure it's robust to incorrect types.
 
-2. Do some basic configuration of the plugin UI.
+2. The `ResidueDataService` checks if the data is categorical or numeric, but this information isn't used anywhere. The config ultimately determines the data's type.
 
-3. Replace the data upload UI with PrimeVue.
+3. The `config.js` store is a mess with all sorts of dead functions.
 
-4. Split the application into separate, interchangeable pages: upload, configure, viewer.
+4. It's unclear how changes in the `config.js` store will actually change the state of the viewer.
 
-5. Set up the configuration page and reactivity.
+5. I need to clean up and annotate color-scale.js.
