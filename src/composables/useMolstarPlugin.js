@@ -1,20 +1,15 @@
 import { ref, onMounted, watch, onBeforeUnmount } from 'vue'
 import { usePluginStore } from '@/stores/plugin'
 import { useDataStore } from '@/stores/data'
-import { useConfigStore } from '@/stores/config'
-import { useColorStore } from '@/stores/color'
 
 export function useMolstarPlugin(containerRef) {
   // Stores
   const pluginStore = usePluginStore()
   const dataStore = useDataStore()
-  const configStore = useConfigStore()
-  const colorStore = useColorStore()
 
   // State
   const error = ref(null)
   const activeStructures = ref([])
-  const activeCustomElements = ref([])
 
   // Track cleanup function
   let cleanup = null
@@ -72,37 +67,6 @@ export function useMolstarPlugin(containerRef) {
     { immediate: true },
   )
 
-  // Custom elements watcher
-  watch(
-    () => colorStore.customElements,
-    (customElements) => {
-      if (!pluginStore.plugin || !customElements) return
-
-      try {
-        clearError()
-        Object.values(customElements).forEach((element) => {
-          pluginStore.registerCustomElement(element)
-        })
-        activeCustomElements.value = Object.keys(customElements)
-      } catch (err) {
-        handleError('Failed to register custom elements', err)
-      }
-    },
-    { deep: true },
-  )
-
-  // Data and config watcher
-  watch([() => dataStore.data, () => configStore.residueColumns], ([data, residueColumns]) => {
-    if (data && residueColumns.length) {
-      try {
-        clearError()
-        colorStore.generateCustomElements()
-      } catch (err) {
-        handleError('Failed to generate custom elements', err)
-      }
-    }
-  })
-
   // Register cleanup at the top level
   onBeforeUnmount(() => {
     if (cleanup) {
@@ -121,7 +85,6 @@ export function useMolstarPlugin(containerRef) {
     isInitialized: pluginStore.isInitialized,
     error,
     activeStructures,
-    activeCustomElements,
 
     // Methods
     clearError,

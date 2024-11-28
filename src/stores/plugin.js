@@ -2,13 +2,14 @@ import { markRaw } from 'vue'
 import { defineStore } from 'pinia'
 import { createPluginUI } from 'molstar/lib/mol-plugin-ui'
 import { renderReact18 } from 'molstar/lib/mol-plugin-ui/react18'
-import { MolstarPluginOperations } from '@/services/molstar/operations'
-import { MolstarPluginConfig } from '@/services/molstar/config'
+import { PluginOperationsService } from '@/services/molstar/pluginOperationsService'
+import { PluginConfigService } from '@/services/molstar/pluginConfigService'
 
 export const usePluginStore = defineStore('plugin', {
   state: () => ({
     plugin: null,
     initializationStatus: 'idle',
+    registeredElements: [],
   }),
 
   getters: {
@@ -21,10 +22,10 @@ export const usePluginStore = defineStore('plugin', {
       try {
         const plugin = await createPluginUI({
           target: container,
-          spec: MolstarPluginConfig.getDefaultConfig(),
+          spec: PluginConfigService.getDefaultConfig(),
           render: renderReact18,
         })
-        // !! The plugin object is not compatible with Vue's reactivity system
+        // Prevent Vue reactivity on the plugin object
         this.plugin = markRaw(plugin)
         this.initializationStatus = 'ready'
       } catch (err) {
@@ -36,12 +37,30 @@ export const usePluginStore = defineStore('plugin', {
 
     async loadStructures(structures) {
       if (!this.plugin) return false
-      return await MolstarPluginOperations.loadStructures(this.plugin, structures)
+      return await PluginOperationsService.loadStructures(this.plugin, structures)
     },
 
-    registerCustomElement(element) {
-      if (!this.plugin) return
-      MolstarPluginOperations.registerCustomElement(this.plugin, element)
+    registerCustomElements(elements) {
+      if (!this.plugin) return false
+
+      // Clear existing elements
+      this.clearCustomElements()
+
+      // Register new elements
+      const success = PluginOperationsService.registerCustomElements(this.plugin, elements)
+      if (success) {
+        this.registeredElements = elements
+      }
+      return success
+    },
+
+    clearCustomElements() {
+      if (!this.plugin) return false
+      const success = PluginOperationsService.clearCustomElements(this.plugin)
+      if (success) {
+        this.registeredElements = []
+      }
+      return success
     },
   },
 })

@@ -7,7 +7,7 @@
 import { DefaultPluginUISpec } from 'molstar/lib/mol-plugin-ui/spec'
 import { PluginConfig } from 'molstar/lib/mol-plugin/config'
 
-export const MolstarPluginConfig = {
+export const PluginConfigService = {
   /**
    * Default configuration for the Mol* plugin
    * @returns {object} - Default configuration

@@ -6,7 +6,7 @@
  */
 import { Asset } from 'molstar/lib/mol-util/assets'
 
-export const MolstarPluginOperations = {
+export const PluginOperationsService = {
   /**
    * Load a single structure into the plugin
    * @param {object} plugin - Mol* plugin instance
@@ -116,11 +116,8 @@ export const MolstarPluginOperations = {
    */
   clearCustomElements(plugin) {
     if (!plugin) throw new Error('Plugin instance is not initialized')
-
     try {
       plugin.representation.structure.themes.colorThemeRegistry.clear()
-      plugin.managers.lociLabels.clear()
-      plugin.customModelProperties.clear()
       return true
     } catch (error) {
       console.error('Failed to clear custom elements:', error)

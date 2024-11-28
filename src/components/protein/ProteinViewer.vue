@@ -16,6 +16,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useMolstarPlugin } from '@/composables/useMolstarPlugin'
+import { useMolstarColoring } from '@/composables/useMolstarColoring';
 import "molstar/build/viewer/molstar.css"
 
 const molstarContainer = ref(null)
@@ -23,4 +24,6 @@ const {
   error,
   clearError,
 } = useMolstarPlugin(molstarContainer)
+useMolstarColoring()
+
 </script>
