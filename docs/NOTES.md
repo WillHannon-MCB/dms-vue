@@ -91,61 +91,20 @@ The bottom line is that frameworks make applications faster to build, easier to 
 
 ## Status
 
-I think it would be wise to refactor the code into the following design pattern:
+I refactored the codebase into the following pattern:
 
-`Services` -> `Stores` -> `Composables`-> `Components`
-
-The `Services` files are objects that encapsulate static methods and shared logic for things like data parsing, and creating a Mol\* plugin. Essentially, `Services` are like more organized versions of files with "utility" functions.
-
-The `Stores` hold the state of the application. Each store is associated with a different piece of reactive state (the protein's state, selected residues, user data, configuration options, etc...) that various aspects of the application depend on. When these pieces of state change, the application listens and updates accordingly.
-
-The `Composables` hold the logic for _how_ the application should update when data in the store changes. This can live in a `Component`, but `Composables` can share reactive logic between multiple `Components`.
-
-The `Components` hold the basic logic for how the user interacts with the application. They also hold the HTML template and CSS style for each piece of the UI.
-
-### Proposed Code Organization
-
-I think the follow code organization makes the most sense:
-
-```bash
-src/
-├── services/
-│   ├── molstar/
-│   │   ├── plugin-service.js      # Core Mol* operations
-│   │   ├── coloring-service.js    # Custom coloring/themes
-│   │   └── structure-service.js   # Structure loading/manipulation
-│   ├── data/
-│   │   ├── parser-service.js      # CSV parsing, data validation
-│   │   ├── processor-service.js   # Data transformations for viz
-│   │   └── export-service.js      # State/data export functionality
-│   └── viz/
-│       ├── color-service.js       # Color scale generation
-│       └── plot-service.js        # Plot data preparation
-│
-├── stores/
-│   ├── plugin.js       # Mol* plugin instance & state
-│   ├── data.js         # Raw/processed data management
-│   ├── config.js       # User configuration choices
-│   ├── selection.js    # Selected residues/mutations
-│   └── visualization.js # Plot & protein viz state
-│
-├── composables/
-│   ├── useProteinViewer.js    # Protein viewer setup/interactions
-│   ├── useDataProcessing.js   # Data processing workflow
-│   ├── useColorScales.js      # Color scale management
-│   └── usePlotInteractions.js # Plot interactivity
-│
-└── components/
-    ├── upload/
-    │   ├── DataUpload.vue        # CSV upload
-    │   └── ValidationReport.vue   # Data validation feedback
-    ├── config/
-    │   ├── ConfigForm.vue        # Main config form
-    │   ├── ColorScaleConfig.vue  # Color scale options
-    │   └── VisualizationConfig.vue # Plot/protein options
-    ├── protein/
-    │   ├── ProteinViewer.vue     # Main protein viewer
-    │   ├── ViewerControls.vue    # Viewer UI controls
-    │   └── ColoringLegend.vue    # Color scheme legend
-    └── plots/                    # Future plot components
+```text
+Services -> Stores -> Composables -> Components
 ```
+
+## To Do
+
+1. Make sure the residue data processing and custom element generation are robust to different data types, specifically the example datasets.
+
+2. Do some basic configuration of the plugin UI.
+
+3. Replace the data upload UI with PrimeVue.
+
+4. Split the application into separate, interchangeable pages: upload, configure, viewer.
+
+5. Set up the configuration page and reactivity.
