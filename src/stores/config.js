@@ -6,6 +6,14 @@ export const useConfigStore = defineStore('config', {
     // Core configuration
     residueColumns: ['region', 'max_effect'], // Selected columns containing residue-level data
     conditions: ['TIM1'], // Selected conditions to visualize
+    // Color scale configurations keyed by column-condition combination
+    colorScaleConfigs: {
+      'region-TIM1': {
+        scaleType: 'categorical',
+        scheme: 'set3',
+        unknownColor: '#777777',
+      },
+    },
     // Detailed settings for each residue data column
     residueSettings: {
       // Example structure:
@@ -43,49 +51,64 @@ export const useConfigStore = defineStore('config', {
 
       return settings.conditions
     },
-  },
+    /**
+     * Get color scale config for a specific column-condition combination
+     */
+    getColorScaleConfig: (state) => (column, condition) => {
+      const key = condition ? `${column}-${condition}` : column
+      return (
+        state.colorScaleConfigs[key] || {
+          scaleType: 'sequential', // Default to sequential
+          scheme: state.visualSettings.defaultColorSchemes.sequential,
+        }
+      )
+    },
 
-  actions: {
-    // Set selected residue data columns
-    setResidueData(columns) {
-      this.residueData = columns
+    /**
+     * Get all active color scale configurations
+     */
+    activeColorScaleConfigs: (state) => {
+      const configs = {}
 
-      // Initialize settings for newly added columns
-      columns.forEach((col) => {
-        if (!this.residueSettings[col]) {
-          this.residueSettings[col] = {
-            conditions: [], // Empty means all conditions
-            colorScale: {
-              name: 'viridis',
-              type: 'sequential',
-            },
+      state.residueColumns.forEach((column) => {
+        if (state.conditions.length) {
+          state.conditions.forEach((condition) => {
+            const key = `${column}-${condition}`
+            configs[key] = state.colorScaleConfigs[key] || {
+              scaleType: 'sequential',
+              scheme: state.visualSettings.defaultColorSchemes.sequential,
+            }
+          })
+        } else {
+          configs[column] = state.colorScaleConfigs[column] || {
+            scaleType: 'sequential',
+            scheme: state.visualSettings.defaultColorSchemes.sequential,
           }
         }
       })
 
-      // Clean up settings for removed columns
-      Object.keys(this.residueSettings).forEach((col) => {
-        if (!columns.includes(col)) {
-          delete this.residueSettings[col]
-        }
-      })
+      return configs
     },
+  },
 
-    // Update conditions for a residue column
-    setResidueConditions(residueColumn, conditions) {
-      if (this.residueSettings[residueColumn]) {
-        this.residueSettings[residueColumn].conditions = conditions
+  actions: {
+    /**
+     * Update color scale configuration for a specific column-condition combination
+     */
+    updateColorScaleConfig(column, condition, config) {
+      const key = condition ? `${column}-${condition}` : column
+      this.colorScaleConfigs[key] = {
+        ...this.colorScaleConfigs[key],
+        ...config,
       }
     },
 
-    // Update color scale settings for a residue column
-    setColorScale(residueColumn, colorScale) {
-      if (this.residueSettings[residueColumn]) {
-        this.residueSettings[residueColumn].colorScale = {
-          ...this.residueSettings[residueColumn].colorScale,
-          ...colorScale,
-        }
-      }
+    /**
+     * Reset color scale configuration to defaults
+     */
+    resetColorScaleConfig(column, condition) {
+      const key = condition ? `${column}-${condition}` : column
+      delete this.colorScaleConfigs[key]
     },
   },
 })

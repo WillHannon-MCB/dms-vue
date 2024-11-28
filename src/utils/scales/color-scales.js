@@ -2,53 +2,94 @@
  * A collection of utility functions for generating color scales.
  */
 import { min, max, scaleSequential, scaleDiverging, scaleOrdinal } from 'd3'
-import { interpolateViridis, interpolateRdBu, schemeTableau10 } from 'd3-scale-chromatic'
+import * as d3Chromatic from 'd3-scale-chromatic'
 
-/**
- * Generates a sequential color scale based on the data for a specified key.
- *
- * @param {Array} data - The array of user-supplied data.
- * @param {string} key - The key in the data objects to base the scale on.
- * @param {Function} colorScheme - The D3 interpolator to use (default: d3.interpolateViridis).
- * @returns {Function} - A D3 scale function that maps values to colors.
- */
-export function generateSequentialColorScale(data, key, colorScheme = interpolateViridis) {
-  const values = data.map((d) => d[key])
-  const domain = [min(values), max(values)]
-  return scaleSequential(colorScheme).domain(domain)
+// Available color schemes by scale type
+export const colorSchemes = {
+  sequential: [
+    'viridis',
+    'magma',
+    'inferno',
+    'plasma',
+    'warm',
+    'cool',
+    'blues',
+    'greens',
+    'greys',
+    'oranges',
+    'purples',
+    'reds',
+  ],
+  diverging: ['RdBu', 'BrBG', 'PRGn', 'PiYG', 'PuOr', 'RdGy', 'RdYlBu', 'RdYlGn', 'Spectral'],
+  categorical: ['tableau10', 'set1', 'set2', 'set3', 'paired', 'category10'],
 }
 
 /**
- * Generates a diverging color scale based on the data for a specified key.
- *
- * @param {Array} data - The array of user-supplied data.
- * @param {string} key - The key in the data objects to base the scale on.
- * @param {number} midpoint - The midpoint value for the diverging scale.
- * @param {Function} colorScheme - The D3 interpolator to use (default: d3.interpolateRdBu).
- * @returns {Function} - A D3 scale function that maps values to colors.
+ * Gets a D3 interpolator function from a scheme name
  */
-export function generateDivergingColorScale(data, key, midpoint, colorScheme = interpolateRdBu) {
-  const values = data.map((d) => d[key])
-  const domain = [min(values), midpoint, max(values)]
-  return scaleDiverging(colorScheme).domain(domain)
+function getColorInterpolator(schemeName, scaleType) {
+  const name = `interpolate${schemeName.charAt(0).toUpperCase()}${schemeName.slice(1)}`
+  if (scaleType === 'diverging' && !name.startsWith('interpolate')) {
+    return d3Chromatic[`interpolate${schemeName}`]
+  }
+  return d3Chromatic[name]
 }
 
 /**
- * Generates a categorical color scale for discrete data.
- *
- * @param {Array} categories - An array of unique category names.
- * @param {Array} colors - An array of color strings to assign to the categories (default: d3.schemeTableau10).
- * @returns {Function} - A D3 scale function that maps categories to colors.
+ * Gets a D3 color scheme array from a scheme name
  */
-export function generateCategoricalColorScale(categories, colors = schemeTableau10) {
-  // If there are more categories than colors, cycle through colors
-  if (categories.length > colors.length) {
+function getColorScheme(schemeName) {
+  const name = `scheme${schemeName.charAt(0).toUpperCase()}${schemeName.slice(1)}`
+  return d3Chromatic[name]
+}
+
+/**
+ * Generates a sequential color scale
+ */
+export function generateSequentialColorScale(data, key, config = {}) {
+  const { scheme = 'viridis', domain: customDomain, reverse = false } = config
+
+  const values = data.map((d) => d[key])
+  const domain = customDomain || [min(values), max(values)]
+  if (reverse) domain.reverse()
+
+  const interpolator = getColorInterpolator(scheme, 'sequential')
+  return scaleSequential(interpolator).domain(domain)
+}
+
+/**
+ * Generates a diverging color scale
+ */
+export function generateDivergingColorScale(data, key, config = {}) {
+  const { scheme = 'RdBu', domain: customDomain, midpoint = 0, reverse = false } = config
+
+  const values = data.map((d) => d[key])
+  const domain = customDomain || [min(values), midpoint, max(values)]
+  if (reverse) domain.reverse()
+
+  const interpolator = getColorInterpolator(scheme, 'diverging')
+  return scaleDiverging(interpolator).domain(domain)
+}
+
+/**
+ * Generates a categorical color scale
+ */
+export function generateCategoricalColorScale(data, key, config = {}) {
+  const { scheme = 'tableau10', domain: customDomain, unknownColor = '#777777' } = config
+
+  const values = data.map((d) => d[key])
+  const domain = customDomain || Array.from(new Set(values))
+
+  const colorScheme = getColorScheme(scheme)
+
+  // Handle case where we have more categories than colors
+  if (domain.length > colorScheme.length) {
     const extendedColors = []
-    for (let i = 0; i < categories.length; i++) {
-      extendedColors.push(colors[i % colors.length])
+    for (let i = 0; i < domain.length; i++) {
+      extendedColors.push(colorScheme[i % colorScheme.length])
     }
-    return scaleOrdinal(extendedColors).domain(categories).unknown('#777777') // gray for unknown
+    return scaleOrdinal(extendedColors).domain(domain).unknown(unknownColor)
   }
 
-  return scaleOrdinal(colors).domain(categories).unknown('#777777')
+  return scaleOrdinal(colorScheme).domain(domain).unknown(unknownColor)
 }

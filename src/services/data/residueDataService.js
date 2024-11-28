@@ -1,9 +1,7 @@
 /**
  *
  * A collection of functions to deal with residue-level data processing.
- *
- * To Do: Refactor as a class with static methods, or at least make some methods private.
- *
+ * *
  */
 export const ResidueDataService = {
   /**
@@ -252,7 +250,7 @@ export const ResidueDataService = {
     // Group and validate data using only entries with structural information
     const groupedData = this._groupAndValidateData(structuralData, column)
 
-    // Process into final format
+    // Process data into final format
     const processedData = this._processGroupedData(groupedData, column)
 
     return processedData
@@ -265,10 +263,11 @@ export const ResidueDataService = {
    * @returns {Object} - Object with processed data arrays and statistics keyed by column-condition
    */
   processResidueData(data, columnConfigs) {
+    // Validate the raw data and column configuration
     this._validateInput(data, columnConfigs)
 
+    // Process each column-condition pair and store the results
     const result = {}
-
     columnConfigs.forEach(({ column, condition }) => {
       try {
         const key = this._createColumnKey(column, condition)
@@ -278,7 +277,6 @@ export const ResidueDataService = {
         throw error
       }
     })
-    console.log(result)
 
     return result
   },
