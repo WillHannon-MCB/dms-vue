@@ -13,10 +13,17 @@ export const ResidueDataService = {
     if (!Array.isArray(columnConfigs) || columnConfigs.length === 0) {
       throw new Error('Column configs must be a non-empty array.')
     }
+
     columnConfigs.forEach((config) => {
       if (typeof config.column !== 'string' || config.column.trim() === '') {
         throw new Error('Column name must be a non-empty string.')
       }
+
+      const hasColumn = data.every((item) => config.column in item)
+      if (!hasColumn) {
+        throw new Error(`Column "${config.column}" is missing from some data objects`)
+      }
+
       if (
         config.condition !== undefined &&
         (typeof config.condition !== 'string' || config.condition.trim() === '')
@@ -121,24 +128,87 @@ export const ResidueDataService = {
    * @param {Array} data - The input data array.
    * @param {string} column - The metric column to aggregate.
    * @param {string} [condition] - The condition to filter on (optional).
-   * @returns {Array} - The processed data array.
+   * @returns {Array} - Processed data array
    */
   processSingleMetric(data, column, condition = null) {
     // Filter by condition if provided
     const filteredData = condition ? data.filter((d) => d.condition === condition) : data
 
-    // Group and validate data
-    const groupedData = this.groupAndValidateData(filteredData, column)
+    // Throw error if no data found for condition
+    if (filteredData.length === 0) {
+      throw new Error(
+        `No data found for column '${column}'${condition ? ` with condition '${condition}'` : ''}`,
+      )
+    }
+
+    // Track statistics
+    const stats = {
+      total: filteredData.length,
+      missing: 0,
+      valid: 0,
+      models: new Set(),
+      chains: new Set(),
+      residues: new Set(),
+      valueRange: { min: Infinity, max: -Infinity },
+    }
+
+    // Filter and count entries with missing structural data
+    const structuralData = filteredData.filter((entry) => {
+      const hasStructuralInfo = entry.residue && entry.chain && entry.model
+
+      if (!hasStructuralInfo) {
+        stats.missing++
+        return false
+      }
+
+      stats.valid++
+      // Track unique elements
+      entry.model.split(':').forEach((m) => stats.models.add(m))
+      entry.chain
+        .split(':')
+        .forEach((chainGroup) => chainGroup.split(';').forEach((c) => stats.chains.add(c)))
+      stats.residues.add(entry.residue)
+
+      // Track value range
+      const value = entry[column]
+      stats.valueRange.min = Math.min(stats.valueRange.min, value)
+      stats.valueRange.max = Math.max(stats.valueRange.max, value)
+
+      return true
+    })
+
+    // Log statistics
+    console.info(
+      `[ResidueDataService] Data summary for '${column}'${condition ? ` (${condition})` : ''}:\n` +
+        `  • ${stats.valid} of ${stats.total} entries have structural information ` +
+        `(${((stats.valid / stats.total) * 100).toFixed(1)}%)\n` +
+        `  • Covers ${stats.models.size} model(s): ${Array.from(stats.models).join(', ')}\n` +
+        `  • Spans ${stats.chains.size} chain(s): ${Array.from(stats.chains).join(', ')}\n` +
+        `  • Contains ${stats.residues.size} unique residue positions\n` +
+        `  • Value range: ${stats.valueRange.min} to ${stats.valueRange.max}`,
+    )
+
+    if (stats.missing > 0) {
+      console.warn(
+        `[ResidueDataService] ${stats.missing} entries (${((stats.missing / stats.total) * 100).toFixed(1)}%) ` +
+          `are missing structural information and will not be displayed on the structure.`,
+      )
+    }
+
+    // Group and validate data using only entries with structural information
+    const groupedData = this.groupAndValidateData(structuralData, column)
 
     // Process into final format
-    return this.processGroupedData(groupedData, column)
+    const processedData = this.processGroupedData(groupedData, column)
+
+    return processedData
   },
 
   /**
    * Main method for processing multiple residue data metrics
    * @param {Array} data - The input data array.
    * @param {Array<{column: string, condition?: string}>} columnConfigs - Array of column and optional condition pairs
-   * @returns {Object} - Object with processed data arrays keyed by column-condition
+   * @returns {Object} - Object with processed data arrays and statistics keyed by column-condition
    */
   processResidueData(data, columnConfigs) {
     this.validateInput(data, columnConfigs)
@@ -150,11 +220,11 @@ export const ResidueDataService = {
         const key = this.createColumnKey(column, condition)
         result[key] = this.processSingleMetric(data, column, condition)
       } catch (error) {
-        // Add context about which column-condition pair caused the error
         error.message = `Error processing ${column}${condition ? `-${condition}` : ''}: ${error.message}`
         throw error
       }
     })
+    console.log(result)
 
     return result
   },

@@ -5,7 +5,7 @@ export const useConfigStore = defineStore('config', {
   state: () => ({
     // Core configuration
     residueColumns: ['max_mut_escape'], // Selected columns containing residue-level data
-    conditions: ['REGN10933', 'REGN10987'], // Selected conditions to visualize
+    conditions: ['REGN10933'], // Selected conditions to visualize
     // Detailed settings for each residue data column
     residueSettings: {
       // Example structure:
