@@ -1,24 +1,31 @@
-<script setup>
-import ProteinViewer from '@/components/protein/ProteinViewer.vue';
-import UploadCSV from '@/components/upload/UploadCSV.vue';
-</script>
-
 <template>
-  <main>
-    <!-- CSV Upload Section -->
-    <UploadCSV />
-    <!-- Protein Viewer -->
-    <ProteinViewer style="width: 100%; height: 600px;" />
-  </main>
-</template>
+  <div>
+    <nav class="bg-gray-800 p-4">
+      <div class="flex space-x-4">
+        <RouterLink to="/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md"
+          :class="{ 'bg-gray-900': $route.path === '/' }">
+          Upload
+        </RouterLink>
 
-<style scoped>
-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
-}
-</style>
+        <RouterLink to="/configure" class="text-gray-300 hover:text-white px-3 py-2 rounded-md"
+          :class="{ 'bg-gray-900': $route.path === '/configure' }">
+          Configure
+        </RouterLink>
+
+        <RouterLink to="/visualize" class="text-gray-300 hover:text-white px-3 py-2 rounded-md"
+          :class="{ 'bg-gray-900': $route.path === '/visualize' }">
+          Visualize
+        </RouterLink>
+
+        <RouterLink to="/export" class="text-gray-300 hover:text-white px-3 py-2 rounded-md"
+          :class="{ 'bg-gray-900': $route.path === '/export' }">
+          Export
+        </RouterLink>
+      </div>
+    </nav>
+
+    <main class="p-5">
+      <RouterView />
+    </main>
+  </div>
+</template>
