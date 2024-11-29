@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { UserDataService } from '@/services/data/userDataService'
+import { RawDataService } from '@/services/data/rawDataService'
 
 export const useDataStore = defineStore('data', {
   state: () => ({
@@ -13,7 +13,7 @@ export const useDataStore = defineStore('data', {
   actions: {
     async processData(csvText) {
       try {
-        const parsedData = await UserDataService.parseCSV(csvText)
+        const parsedData = await RawDataService.parseCSV(csvText)
         this.data = parsedData
         this.status = { message: 'Success!', type: 'success' }
       } catch (error) {
@@ -53,7 +53,7 @@ export const useDataStore = defineStore('data', {
 
     structures: (state) =>
       state.models.map((model) => ({
-        url: UserDataService.getStructureUrl(model),
+        url: RawDataService.getStructureUrl(model),
         format: 'mmcif',
         assemblyId: '1',
         isBinary: false,

@@ -1,7 +1,5 @@
 /**
- *
- * A collection of functions to deal with residue-level data processing.
- * *
+ * A collection of operations related to residue-level data processing.
  */
 export const ResidueDataService = {
   /**

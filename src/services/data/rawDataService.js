@@ -1,12 +1,9 @@
 /**
- * Service for handling data operations
- *
- * A collection of operations related to data processing.
- *
+ * A collection of operations related to raw data processing.
  */
 import { csvParse, autoType } from 'd3-dsv'
 
-export const UserDataService = {
+export const RawDataService = {
   /**
    * Parses a string in the input data containing multiple values
    * @param {string} str - String containing multiple values (e.g., "6XR8:6XRA" or "A;B;C:A;B;C")

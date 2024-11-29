@@ -4,13 +4,13 @@ import { useDataStore } from './data'
 export const useConfigStore = defineStore('config', {
   state: () => ({
     // Core configuration
-    residueColumns: ['region', 'max_effect'], // Selected columns containing residue-level data
-    conditions: ['TIM1'], // Selected conditions to visualize
+    residueColumns: ['region'], // Selected columns containing residue-level data
+    conditions: [], // Selected conditions to visualize
     // Color scale configurations keyed by column-condition combination
     colorScaleConfigs: {
-      'region-TIM1': {
+      region: {
         scaleType: 'categorical',
-        scheme: 'set3',
+        scheme: 'tableau10',
         unknownColor: '#777777',
       },
     },
