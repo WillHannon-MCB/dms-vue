@@ -1,8 +1,5 @@
 /**
- * Mol* Plugin Service Operations
- *
- * A collection of operations to interact with the Mol* plugin instance.
- *
+ * A collection of operations to related to the Mol* plugin instance.
  */
 import { Asset } from 'molstar/lib/mol-util/assets'
 

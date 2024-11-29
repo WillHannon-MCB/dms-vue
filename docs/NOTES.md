@@ -91,20 +91,12 @@ The bottom line is that frameworks make applications faster to build, easier to 
 
 ## Status
 
-I refactored the codebase into the following pattern:
-
-```text
-Services -> Stores -> Composables -> Components
-```
+Data processing and protein coloring are reasonable organized and work with categorical, sequential, and diverging data.
 
 ## To Do
 
-1. Although it's possible to use categorical and numeric color scales, there's basically no type safety, documentation, or error checking. So, I need to go through the code carefully and make sure it's robust to incorrect types.
+1. Split the application into multiple pages (Upload -> Configure -> Viewer -> Download).
 
-2. The `ResidueDataService` checks if the data is categorical or numeric, but this information isn't used anywhere. The config ultimately determines the data's type.
+2. Build out the configuration workflow and data flow.
 
-3. The `config.js` store is a mess with all sorts of dead functions.
-
-4. It's unclear how changes in the `config.js` store will actually change the state of the viewer.
-
-5. I need to clean up and annotate color-scale.js.
+3. Organize the stores and track the flow of events.

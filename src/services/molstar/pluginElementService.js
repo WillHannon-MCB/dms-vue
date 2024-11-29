@@ -1,5 +1,5 @@
 /**
- * A collection of functions to generate Mol* custom element properties.
+ * A collection of operations related to generating Mol* custom element properties.
  */
 import { CustomElementProperty } from 'molstar/lib/mol-model-props/common/custom-element-property'
 import { Color } from 'molstar/lib/mol-util/color'
@@ -11,9 +11,9 @@ import {
 
 export const PluginElementService = {
   /**
-   * Creates a data map structure for efficient lookups
-   * @param {Array} processedData - The processed data array.
-   * @returns {Map} - The data map.
+   * Map residue data values to models/chains IDs for efficient lookups
+   * @param {Array} processedData - The processed data array from ResidueDataService.
+   * @returns {Map} - The data map of values by model, chain, and residue.
    */
   _createDataMap: (processedData) => {
     const dataMap = new Map()
@@ -41,9 +41,13 @@ export const PluginElementService = {
 
   /**
    * Creates a color scale based on data and scale configuration
-   * @param {Array} data - The processed data array.
-   * @param {Object} scaleConfig - The scale configuration object.
+   * @param {Array} data - The processed data array from ResidueDataService.
+   * @param {Object} scaleConfig - The scale configuration object from configStore.
    * @returns {Function} - The D3 scale function.
+   *
+   * To Do:
+   * - Add support for discrete numeric color scales.
+   * - Add support for custom color scales.
    */
   _createColorScale: (data, scaleConfig) => {
     const { scaleType = 'sequential', ...config } = scaleConfig
@@ -62,10 +66,10 @@ export const PluginElementService = {
   },
 
   /**
-   * Maps residue data to atom indices for a given model
+   * Maps residue data to atom indices for a given Mol* model
    * @param {Object} model - The Mol* model object.
    * @param {Map} dataMap - The data map structure.
-   * @returns {Map} - The residue-color map.
+   * @returns {Map} - The residue-color map used by the CustomElementProperty generator.
    */
   _mapResiduesToAtoms: async (model, dataMap) => {
     const modelId = model.entryId.toUpperCase()

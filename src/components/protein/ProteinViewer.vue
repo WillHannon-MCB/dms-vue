@@ -1,4 +1,3 @@
-<!-- components/MolstarViewer.vue -->
 <template>
   <div class="relative w-full h-full">
     <!-- Error display -->
@@ -6,10 +5,8 @@
       {{ error.message }}
       <button @click="clearError" class="ml-2 text-sm underline">Dismiss</button>
     </div>
-
     <!-- Plugin container -->
     <div ref="molstarContainer" class="w-full h-full"></div>
-
   </div>
 </template>
 
@@ -25,5 +22,4 @@ const {
   clearError,
 } = useMolstarPlugin(molstarContainer)
 useMolstarColoring()
-
 </script>

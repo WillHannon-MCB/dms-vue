@@ -1,3 +1,6 @@
+/**
+ * State logic for coloring structures in Mol* viewer
+ */
 import { ref, watch } from 'vue'
 import { usePluginStore } from '@/stores/plugin'
 import { useDataStore } from '@/stores/data'
@@ -6,11 +9,15 @@ import { PluginElementService } from '@/services/molstar/pluginElementService'
 import { ResidueDataService } from '@/services/data/residueDataService'
 
 export function useMolstarColoring() {
+  // Stores
   const pluginStore = usePluginStore()
   const dataStore = useDataStore()
   const configStore = useConfigStore()
+
+  // State
   const error = ref(null)
 
+  // Utils
   const clearError = () => {
     error.value = null
   }
@@ -36,6 +43,7 @@ export function useMolstarColoring() {
     )
   }
 
+  // Reactivity
   watch(
     [
       () => dataStore.data,

@@ -1,11 +1,18 @@
+/**
+ * State logic for uploading CSV data files
+ */
 import { ref } from 'vue'
 import { useDataStore } from '@/stores/data'
 
 export function useFileUpload() {
+  // Store
   const store = useDataStore()
+
+  // State
   const file = ref(null)
   const fileName = ref('No file chosen')
 
+  // Utils
   const handleFileSelect = (event) => {
     const selectedFile = event.target.files[0]
     if (selectedFile?.type === 'text/csv') {

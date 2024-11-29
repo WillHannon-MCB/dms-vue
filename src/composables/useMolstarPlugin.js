@@ -1,3 +1,6 @@
+/**
+ * State logic for Mol* viewer plugin
+ */
 import { ref, onMounted, watch, onBeforeUnmount } from 'vue'
 import { usePluginStore } from '@/stores/plugin'
 import { useDataStore } from '@/stores/data'
@@ -10,11 +13,9 @@ export function useMolstarPlugin(containerRef) {
   // State
   const error = ref(null)
   const activeStructures = ref([])
-
-  // Track cleanup function
   let cleanup = null
 
-  // Error handling helper
+  // Utils
   const handleError = (errorMessage, err) => {
     error.value = {
       message: errorMessage,
@@ -24,12 +25,10 @@ export function useMolstarPlugin(containerRef) {
     console.error(errorMessage, err)
   }
 
-  // Clear error helper
   const clearError = () => {
     error.value = null
   }
 
-  // Initialize plugin
   const initializePlugin = async () => {
     if (!containerRef.value) {
       console.error('Composable: Container reference not available')
@@ -42,7 +41,7 @@ export function useMolstarPlugin(containerRef) {
     }
   }
 
-  // Structure watcher
+  // Reactivity
   watch(
     () => dataStore.structures,
     async (newStructures) => {
@@ -67,7 +66,7 @@ export function useMolstarPlugin(containerRef) {
     { immediate: true },
   )
 
-  // Register cleanup at the top level
+  // Lifecylce Hooks
   onBeforeUnmount(() => {
     if (cleanup) {
       cleanup()
@@ -75,7 +74,6 @@ export function useMolstarPlugin(containerRef) {
     pluginStore.$reset()
   })
 
-  // Initialize on mount
   onMounted(async () => {
     await initializePlugin()
   })
