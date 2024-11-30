@@ -8,6 +8,9 @@ import { useConfigStore } from '@/stores/config'
 import { PluginElementService } from '@/services/molstar/pluginElementService'
 import { ResidueDataService } from '@/services/data/residueDataService'
 
+import { createLogger } from '@/utils/debug/logger'
+const logger = createLogger('useMolstarColoring.js')
+
 export function useMolstarColoring() {
   // Stores
   const pluginStore = usePluginStore()
@@ -60,10 +63,11 @@ export function useMolstarColoring() {
         const columnConfigs = createColumnConfigs(columns, conditions)
         const residueData = ResidueDataService.processResidueData(data, columnConfigs)
 
-        console.log(
-          'Debug [useMolstarColoring]: Generating custom elements with scale configs:',
-          scaleConfigs,
-        )
+        // console.log(
+        //   'Debug [useMolstarColoring]: Generating custom elements with scale configs:',
+        //   scaleConfigs,
+        // )
+        logger.info('Generating custom elements with scale configs:', scaleConfigs)
 
         // Pass scale configurations to generateCustomElements
         const elements = PluginElementService.generateCustomElements(
