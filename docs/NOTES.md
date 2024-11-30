@@ -88,15 +88,3 @@ However, this approach has massive drawbacks in terms of managing complexity. Mo
 The bottom line is that frameworks make applications faster to build, easier to maintain, and possible to scale. I didn’t understand web development enough to use a framework like Vue for dms-viz. Now I’ve built several websites with Vue.
 
 **Second**, there have been massive improvements in web-based molecular visualization software over something like NGL. Specifically, Mol*was created by the people who made NGL and Jsmol to rival Chimera and PyMol in their utility and customizability. You can use Mol* to make publication-quality figures on the web. The main advantage that Mol\* has over NGL is that it comes with its own UI and State management. That means I don’t need to worry about managing the protein in my application. I only need to worry about formatting the data, making a color scale, and listening to interactions with residues.
-
-## Status
-
-Data processing and protein coloring are reasonable organized and work with categorical, sequential, and diverging data.
-
-## To Do
-
-1. Split the application into multiple pages (Upload -> Configure -> Viewer -> Download).
-
-2. Build out the configuration workflow and data flow.
-
-3. Organize the stores and track the flow of events.

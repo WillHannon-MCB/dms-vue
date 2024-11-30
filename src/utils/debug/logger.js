@@ -1,3 +1,6 @@
+/**
+ * A simple logger class for logging messages to the console.
+ */
 class Logger {
   constructor(filename) {
     this.filename = filename
