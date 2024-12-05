@@ -1,13 +1,9 @@
-<!-- src/App.vue -->
 <template>
-  <div class="min-h-screen">
-    <MainNavigation />
-    <main class="container mx-auto p-5">
-      <RouterView />
-    </main>
-  </div>
+  <MainLayout>
+    <RouterView />
+  </MainLayout>
 </template>
 
 <script setup>
-import MainNavigation from '@/components/layout/MainNavigation.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
 </script>

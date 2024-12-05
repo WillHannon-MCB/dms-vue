@@ -1,8 +1,7 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center">
-    <h1 class="text-3xl font-bold text-gray-900">Export View</h1>
-  </div>
+  <ExportLayout></ExportLayout>
 </template>
 
 <script setup>
+import ExportLayout from '@/components/layout/ExportLayout.vue'
 </script>

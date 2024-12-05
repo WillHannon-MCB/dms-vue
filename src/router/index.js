@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import StartView from '@/views/StartView.vue'
+import StartView from '@/views/UploadView.vue'
 import ConfigureView from '@/views/ConfigureView.vue'
 import VisualizeView from '@/views/VisualizeView.vue'
 import ExportView from '@/views/ExportView.vue'
@@ -9,10 +9,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'start',
+      name: 'upload',
       component: StartView,
       meta: {
-        title: 'Start',
+        title: 'Upload',
         order: 1,
       },
     },

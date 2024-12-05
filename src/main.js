@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import PrimeVue from 'primevue/config'
-import Aura from '@primevue/themes/aura'
+import Material from '@primevue/themes/material'
 
 import router from './router'
 import App from './App.vue'
@@ -19,7 +19,10 @@ app.use(router)
 // PrimeVue for basic UI Components
 app.use(PrimeVue, {
   theme: {
-    preset: Aura,
+    preset: Material,
+    options: {
+      darkModeSelector: '.dark',
+    },
   },
 })
 app.mount('#app')

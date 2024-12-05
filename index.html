@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vite App</title>
+  <script id="check-dark-mode">
+    (function () {
+      switch (localStorage.getItem('vueuse-color-scheme')) {
+        case 'dark':
+          console.log('dark in local storage, adding dark mode.');
+          document.documentElement.classList.add('dark');
+          break;
+        case 'light':
+          console.log('light in local storage, removing dark mode.');
+          document.documentElement.classList.remove('dark');
+          break;
+        default:
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            console.log('Dark is sys preference, adding dark mode.');
+            document.documentElement.classList.add('dark');
+          } else {
+            console.log('Dark is not sys preference, removing dark mode.');
+            document.documentElement.classList.remove('dark');
+          }
+      }
+    })();
+  </script>
+  <style>
+    html.dark {
+      color-scheme: dark;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
