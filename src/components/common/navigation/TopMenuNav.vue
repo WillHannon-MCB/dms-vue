@@ -1,33 +1,55 @@
 <template>
-  <Breadcrumb :model="navigationItems">
+  <Breadcrumb :model="navigationItems" :pt="{
+    root: { class: 'breadcrumb' }
+  }">
     <template #item="{ item, props }">
-      <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-        <a :href="href" v-bind="props.action" @click="navigate">
-          <span class="font-medium">{{ item.label }}</span>
-        </a>
-      </RouterLink>
-      <a v-else :href="item.url" :target="item.target" v-bind="props.action">
-        <span>{{ item.label }}</span>
-      </a>
+      <Button as="router-link" :to="item.route" :label="item.label" :icon="item.icon"
+        :class="[props.action.class, 'button', { 'active': isActiveRoute(item.route) }]" variant="outlined" size="small"
+        raised />
     </template>
   </Breadcrumb>
 </template>
 
 <script setup>
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import Breadcrumb from 'primevue/breadcrumb';
+import Button from 'primevue/button';
+
+const route = useRoute()
 
 const navigationRoutes = [
-  { path: '/', name: 'Upload' },
-  { path: '/configure', name: 'Configure' },
-  { path: '/visualize', name: 'Visualize' },
-  { path: '/export', name: 'Export' }
+  { path: '/', name: 'Upload', icon: 'pi pi-upload' },
+  { path: '/configure', name: 'Configure', icon: 'pi pi-cog' },
+  { path: '/visualize', name: 'Visualize', icon: 'pi pi-eye' },
+  { path: '/export', name: 'Export', icon: 'pi pi-download' }
 ]
 
 const navigationItems = computed(() =>
   navigationRoutes.map(route => ({
     label: route.name,
-    route: route.path
+    route: route.path,
+    icon: route.icon
   }))
 )
+
+const isActiveRoute = (path) => {
+  return route.path === path
+}
 </script>
+
+<style scoped>
+.breadcrumb {
+  @apply bg-inherit
+}
+
+.button {
+  @apply text-base font-semibold text-[var(--nav-c-text)] p-2;
+}
+
+.active {
+  background: var(--p-button-outlined-primary-hover-background);
+  color: var(--p-button-outlined-primary-color);
+  border-color: var(--p-button-outlined-primary-border-color);
+}
+</style>

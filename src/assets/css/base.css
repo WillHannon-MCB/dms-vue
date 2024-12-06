@@ -6,9 +6,24 @@
   font-weight: normal;
 }
 
+:root {
+  --app-c-bg: var(--p-surface-0);
+  --app-c-bg-sticky: #fffffff9;
+  --app-c-divider: var(--p-surface-200);
+  --nav-c-text: var(--p-text-700);
+}
+
+:root.dark {
+  --app-c-bg: var(--p-surface-800);
+  --app-c-bg-sticky: #27272afb;
+  --app-c-divider: var(--p-surface-900);
+  --nav-c-text: var(--p-text-300);
+}
+
 body {
   min-height: 100vh;
   line-height: 1.6;
+  background-color: var(--app-c-bg);
   font-family:
     Inter,
     -apple-system,
