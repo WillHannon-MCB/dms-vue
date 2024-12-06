@@ -44,7 +44,7 @@ const isActiveRoute = (path) => {
 }
 
 .button {
-  @apply text-base font-semibold text-[var(--nav-c-text)] p-2;
+  @apply text-base font-semibold text-[var(--text-primary)] p-2;
 }
 
 .active {

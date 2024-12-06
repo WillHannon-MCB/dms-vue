@@ -7,23 +7,45 @@
 }
 
 :root {
-  --app-c-bg: var(--p-surface-0);
-  --app-c-bg-sticky: #fffffff9;
-  --app-c-divider: var(--p-surface-200);
-  --nav-c-text: var(--p-text-700);
+  /* Background colors */
+  --app-background-color: var(--p-surface-0);
+  /* Text colors */
+  --app-text-primary: var(--p-surface-800);
+  --app-text-secondary: var(--p-surface-600);
+  --app-text-tertiary: var(--p-surface-500);
+  --app-text-contrast: var(--p-surface-950);
+  /* Brand colors */
+  --brand-primary: var(--p-primary-color);
+  --brand-gradient-to: var(--brand-primary);
+  --brand-gradient-from: var(--p-primary-950);
+  /* Menu bar colors */
+  --nav-background-sticky: #fffffff9;
+  --nav-divider: var(--p-surface-200);
+  --nav-text: var(--p-text-700);
 }
 
 :root.dark {
-  --app-c-bg: var(--p-surface-800);
-  --app-c-bg-sticky: #27272afb;
-  --app-c-divider: var(--p-surface-900);
-  --nav-c-text: var(--p-text-300);
+  /* Background colors */
+  --app-background-color: var(--p-surface-800);
+  /* Text colors */
+  --app-text-primary: var(--p-surface-100);
+  --app-text-secondary: var(--p-surface-400);
+  --app-text-tertiary: var(--p-surface-500);
+  --app-text-contrast: var(--p-surface-0);
+  /* Brand colors */
+  --brand-gradient-to: var(--brand-primary);
+  --brand-gradient-from: var(--p-primary-100);
+  /* Menu bar colors */
+  --nav-background-sticky: #27272afb;
+  --nav-divider: var(--p-surface-900);
+  --nav-text: var(--p-text-300);
 }
 
 body {
   min-height: 100vh;
   line-height: 1.6;
-  background-color: var(--app-c-bg);
+  background-color: var(--app-background-color);
+  color: var(--app-text-primary);
   font-family:
     Inter,
     -apple-system,
@@ -41,4 +63,30 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--app-text-primary);
+  line-height: 1.25;
+}
+
+p {
+  color: var(--app-text-secondary);
+}
+
+.text-primary {
+  color: var(--app-text-primary);
+}
+
+.text-secondary {
+  color: var(--app-text-secondary);
+}
+
+.text-tertiary {
+  color: var(--app-text-tertiary);
 }

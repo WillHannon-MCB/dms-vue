@@ -47,8 +47,8 @@ onUnmounted(() => {
 }
 
 .top-menu-bar-sticky {
-  background-color: var(--app-c-bg-sticky);
+  background-color: var(--nav-background-sticky);
   backdrop-filter: blur(10px);
-  border-bottom-color: var(--app-c-divider);
+  border-bottom-color: var(--nav-divider);
 }
 </style>

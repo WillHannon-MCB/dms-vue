@@ -44,11 +44,11 @@ const navigateExternal = (url) => {
 
 <style scoped>
 .button-link {
-  @apply text-base font-semibold text-[var(--nav-c-text)] p-2;
+  @apply text-base font-semibold p-2 text-[var(--text-primary)] !important;
 }
 
 .button-social {
-  @apply text-[var(--nav-c-text)] p-2;
+  @apply text-[var(--text-primary)] p-2 !important;
 }
 
 :deep .button-social .pi {
