@@ -1,7 +1,7 @@
 <template>
-  <div class="fixed top-0 left-0 right-0 w-full pointer-events-none top-menu-bar"
+  <div class="fixed top-0 left-0 right-0 w-full pointer-events-none top-menu-bar z-50"
     :class="{ 'top-menu-bar-sticky': isScrolled }">
-    <nav class="h-16 flex items-center justify-between px-10 z-50 pointer-events-auto">
+    <nav class="h-16 flex items-center justify-between px-10 pointer-events-auto">
       <!-- Left slot -->
       <div class="flex-1">
         <slot name="left"></slot>

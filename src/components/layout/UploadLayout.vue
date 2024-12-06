@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col space-y-8">
-    <header class="pb-4">
+    <header class="pb-4 select-none">
       <div class="text-center">
         <h1 class="text-8xl font-light tracking-tight">
           Welcome to
