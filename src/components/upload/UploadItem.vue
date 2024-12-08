@@ -10,7 +10,7 @@
       <TabPanels>
         <!-- File Upload Panel -->
         <TabPanel value="file">
-          <FileUpload @upload="onAdvancedUpload($event)" previewWidth="0" :accept="accept" :disabled="disabled"
+          <FileUpload @upload="onAdvancedUpload($event)" :previewWidth="0" :accept="accept" :disabled="disabled"
             :maxFileSize="1000000" :dt="fileUploadDesignTokens" :pt="{
               root: { class: 'upload' }
             }">

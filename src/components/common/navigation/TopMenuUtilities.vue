@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-2">
+  <div class="hidden xl:flex items-center gap-1">
     <!-- Links Group -->
     <div class="flex items-center gap-1">
       <Button label="Documentation" variant="link" class="no-underline" :class="'button-link'"
@@ -11,7 +11,7 @@
       </Button>
     </div>
 
-    <Divider layout="vertical" />
+    <Divider :class="'divider-vertical'" layout="vertical" />
 
     <!-- Socials -->
     <div class="flex items-center gap-">
@@ -24,10 +24,16 @@
       </Button>
     </div>
 
-    <Divider layout="vertical" />
+    <Divider :class="'divider-vertical'" layout="vertical" />
 
     <!-- Dark Mode Toggle -->
-    <DarkModeSelector />
+    <div class="flex justify-center items-center px-2">
+      <DarkModeSelector />
+    </div>
+  </div>
+  <div class="block xl:hidden relative">
+    <Button icon="pi pi-align-justify" aria-label="Menu" :dt="menuButtonDesignTokens" @click="toggleMenu"
+      :aria-expanded="isMenuOpen" />
   </div>
 </template>
 
@@ -40,18 +46,29 @@ import Divider from 'primevue/divider';
 const navigateExternal = (url) => {
   window.open(url, '_blank', 'noopener,noreferrer');
 };
+
+const menuButtonDesignTokens = {
+  padding: {
+    y: ".25rem",
+  },
+  iconOnlyWidth: "2rem",
+}
 </script>
 
 <style scoped>
 .button-link {
-  @apply text-base font-semibold p-2 text-[var(--text-primary)] !important;
+  @apply text-base font-semibold p-1 text-[var(--text-primary)] !important;
 }
 
 .button-social {
-  @apply text-[var(--text-primary)] p-2 !important;
+  @apply text-[var(--text-primary)] p-1 !important;
 }
 
 :deep .button-social .pi {
   @apply text-xl !important;
+}
+
+.divider-vertical {
+  @apply m-1 !important;
 }
 </style>

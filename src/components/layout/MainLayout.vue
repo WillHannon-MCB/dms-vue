@@ -14,7 +14,7 @@
       </template>
     </TopMenuBar>
 
-    <main class="flex-grow container mx-auto p-5 mt-16">
+    <main class="flex-grow container mx-auto p-5 mt-6 md:mt-8 lg:mt-10 xl:mt-12">
       <slot></slot>
     </main>
   </div>
