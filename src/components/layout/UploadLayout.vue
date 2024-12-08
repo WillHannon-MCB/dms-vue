@@ -15,10 +15,14 @@
       </div>
     </header>
     <div class="flex-grow">
-      <slot></slot>
+      <UploadContainer></UploadContainer>
     </div>
   </div>
 </template>
+
+<script setup>
+import UploadContainer from '@/components/upload/UploadContainer.vue';
+</script>
 
 <style scoped>
 .title {

@@ -11,8 +11,8 @@
   --app-background-color: var(--p-surface-0);
   /* Text colors */
   --app-text-primary: var(--p-surface-800);
-  --app-text-secondary: var(--p-surface-600);
-  --app-text-tertiary: var(--p-surface-500);
+  --app-text-secondary: var(--p-surface-500);
+  --app-text-tertiary: var(--p-surface-400);
   --app-text-contrast: var(--p-surface-950);
   /* Brand colors */
   --brand-primary: var(--p-primary-color);
